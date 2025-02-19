@@ -105,8 +105,11 @@ module.exports = {
         ".form-input": {
           "@apply mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500": "",
         },
-        ".custom-header": {
-          "@apply flex flex-col bg-[#7E5230] items-center justify-center w-full h-[166px] m-2 left-[38px] rounded-[500px] border-[1px] mr-[40px] ml-[40px] mb-[15px] pr-[40px] pl-[40px]": "",
+        // ".custom-header": {
+        //   "@apply flex flex-col bg-[#8F8F8F] items-center justify-center w-full h-[166px] m-2 left-[38px] rounded-[500px] border-[1px] mr-[40px] ml-[40px] mb-[15px] pr-[40px] pl-[40px]": "",
+        // },
+        ".custom-header" : {
+          "@apply flex flex-col bg-[#8F8F8F] items-center justify-center w-full h-[145px] m-2 left-[38px] rounded-[500px] border-[1px] mr-[40px] ml-[40px] mb-[15px] pr-[40px] pl-[40px] transition-all duration-300 ease-in-out" : "",
         },
         ".auction-filter-grid-element":{
           "@apply border py-[28px] px-[40px] rounded-[96px] bg-grayCustom": "",

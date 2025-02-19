@@ -53,9 +53,17 @@ export const VendorService = {
         if(!id || !username){
             console.log("No User Info is present");
         }
+
         else{
             // let user = getCurrUserInfo.userInfo;
             console.log("User Trying to send the request is : ",username);
+            console.log("Setting up the token in config");
+            let token = localStorage.getItem("authToken");
+            let config = {
+              headers : {
+                "Authorization" : `Bearer ${token}`
+              }
+            }
             try{
                 let url = "/vendor/createItem";
                 let data_to_send = JSON.parse(JSON.stringify(data));
@@ -93,7 +101,7 @@ export const VendorService = {
                 // formData.append('images',new Blob([JSON.stringify()]))
                 console.log("Data to send to backend", formData);
                 
-                const response = await apiService.post(url,formData);
+                const response = await apiService.post(url,formData,config);
                 console.log(response);
                 if (response.data.ErrorCode=="0"){
                     return true;
@@ -114,6 +122,13 @@ export const VendorService = {
       }
       console.log("Config is : ",config);
       const res = await apiService.get(url,config);
+      if(res){
+        // console.log("response is ",res.data);
+        console.log("Type of response is : ",typeof(res));
+        const res_json = res.data;
+        console.log(res_json);
+        return res_json;
+      }
       return true;
     },
     async changeForm(data){

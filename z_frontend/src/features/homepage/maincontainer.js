@@ -1,33 +1,17 @@
 import React from 'react';
+import MainPageImage from '../../public/images/MainBackgroundImage.jpeg'
 
 const MainContainerDramatic = ({ children }) => {
   return (
     <main 
       className="flex-grow mx-auto pb-4 bg-cover bg-center bg-no-repeat min-h-screen relative overflow-hidden"
       style={{
-        background: `
-          linear-gradient(
-            45deg,
-            #000 0%,
-            #8B4513 25%,
-            #D4AF37 50%,
-            #8B4513 75%,
-            #000 100%
-          )
-        `,
-        backgroundSize: '200% 200%',
-        animation: 'gradientAnimation 15s ease infinite'
+        backgroundImage: `url('/images/MainBackgroundImage.jpeg')`, // Replace with your actual image path
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      <style>
-        {`
-          @keyframes gradientAnimation {
-            0% { background-position: 0% 50% }
-            50% { background-position: 100% 50% }
-            100% { background-position: 0% 50% }
-          }
-        `}
-      </style>
       <div className="relative z-10">
         {children}
       </div>

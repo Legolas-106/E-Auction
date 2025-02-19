@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './services/auth/useAuthHook'; // Assuming the previous context is saved here
 import LoginPage from './pages/auth/login';
 import HomePage from './pages/home/homepage';
-import Layout from './routes/base_template';
+import Layout from './pages/base_template';
 import AuctionRouter from './routes/auction/AuctionRouter';
 import SignUpPageBidder from './pages/auth/signupBidder';
 import SignUpPageVendor from './pages/auth/signupVendor';
@@ -11,6 +11,7 @@ import SignUp from './pages/auth/signup';
 import AuctionListing from './features/auction/AuctionListing';
 import ListItemForm from './pages/vendor/listItem';
 import ItemDetailsPage from './pages/vendor/itemDetails';
+import AuctionDetails from './pages/auction/auctionDetails';
 
 import 'bootstrap';
 import './App.css';
@@ -32,7 +33,10 @@ function App() {
                   <Route path='vendor' element={<SignUpPageVendor />} />
                 </Route>
               </Route>
-              <Route path="searchAuction/*" element={< AuctionListing />} />
+              <Route path="searchAuction" element={< AuctionListing />}>
+                <Route path='auctionDetails' element={< AuctionDetails />} />
+              </Route>
+              {/* <Route path='auctionDetails' element={< AuctionDetails />} /> */}
               <Route path='vendor'>
                 <Route path='listItem' element={< ListItemForm />} />
                 <Route path='myItems' element={< ItemDetailsPage />} />

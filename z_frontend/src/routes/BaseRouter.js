@@ -1,6 +1,6 @@
 import React from "react";
 import {Routes,Route} from 'react-router-dom';
-import Layout from "./base_template";
+import Layout from "../pages/base_template";
 import HomePage from "../pages/home/homepage";
 import AuthRouter from "./auth/AuthRouters";
 import AuctionRouter from "./auction/AuctionRouter";

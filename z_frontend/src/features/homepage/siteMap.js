@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import AuctionForm from "../auction/AuctionSearchForm";
+import AuctionForm from "../../pages/auction/AuctionSearchForm";
 import { patch } from "@mui/system";
 
 const SiteMap = () =>{

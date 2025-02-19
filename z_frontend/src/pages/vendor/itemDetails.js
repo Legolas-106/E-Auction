@@ -8,9 +8,10 @@ import { constructNow } from "date-fns";
 const ItemDetailsPage = () => {
     const [expandedItems, setExpandedItems] = useState({});
     const [selectedLot, setSelectedLot] = useState(null);
+    const [itemFetched,setItemFetched] = useState(false);
   
     // Sample data structure
-    const listedLots = [
+    let listedLots = [
       {
         auctionNo: "A123",
         itemNo: "I456",
@@ -104,13 +105,10 @@ const ItemDetailsPage = () => {
         ]
       }
     ];
-    
-
-
-    const upcomingAuctionItems = [];
-    const ongoingAuctionItems = [];
-    const endedAuctionItems = [];
-    const unlistedLots = [
+    let upcomingAuctionItems;
+    let ongoingAuctionItems;
+    let endedAuctionItems;
+    let unlistedLots = [
       {
         itemNo: "I789",
         itemDetails: "Vintage Watch Collection",
@@ -175,6 +173,16 @@ const ItemDetailsPage = () => {
       }
     ];
 
+    const loadTableDate = () =>{
+      console.log("Filling up the table data");
+      console.log(listedLots);
+      console.log(unlistedLots);
+      console.log(upcomingAuctionItems);
+      console.log(ongoingAuctionItems);
+      console.log(endedAuctionItems);
+
+    }
+
     //Using useEffect with no dependecy array
     const {getCurrUserInfo} = useAuth();
     useEffect(()=>{
@@ -186,6 +194,30 @@ const ItemDetailsPage = () => {
           try{
             const response = await VendorService.getAllItems(userInfo.id);
             console.log("Response is received ",response);
+            if(response.listedAuction && response.listedAuction!=null){
+              listedLots = response.listedAuction;
+              console.log(listedLots);
+            }
+            if(response.upcomingAuction && response.upcomingAuction!=null){
+              upcomingAuctionItems = response.upcomingAuction;
+              console.log(upcomingAuctionItems);
+
+            }
+            if(response.ongoingAuction && response.ongoingAuction!=null){
+              ongoingAuctionItems = response.ongoingAuction;
+              console.log(ongoingAuctionItems);
+
+            }
+            if(response.endedAuction && response.endedAuction !=null){
+              endedAuctionItems = response.endedAuction;
+              console.log(endedAuctionItems);
+
+            }
+            if(response.itemDetails && response.itemDetails != null){
+              unlistedLots = response.itemDetails;
+              console.log(unlistedLots);
+            }
+            setItemFetched(true);
           }catch(err){
             console.log("Erro while sending request to backend ",err);
           }
@@ -197,6 +229,7 @@ const ItemDetailsPage = () => {
 
       fetchData();
       // const tableData = await VendorService
+      loadTableDate();
     },[getCurrUserInfo]);
     const LotsTable = ({ item, showSeeDetail }) => (
       <div className="w-full mt-1">
@@ -333,6 +366,7 @@ const ItemDetailsPage = () => {
                 <ListedLotCard key={index} item={item} index={index} />
               ))}
             </div>
+            
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
               <h4 className="text-left text-lg">Past Auctions</h4>
               <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">

@@ -6,6 +6,8 @@ import AuctionWheel from '../../routes/statsWheel';
 import IndividualIntervalsExample from '../../routes/corosaul';
 import MainContainerDramatic from '../../features/homepage/maincontainer';
 import TestimonialCorosaul from '../../features/homepage/testimonialCorosaul';
+import WhyAuctionHaiPage from '../../features/homepage/whyAUctioHai';
+import AuctionTable from '../../features/homepage/auctionTable';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -111,55 +113,21 @@ const HomePage = () => {
             </button>
           </div>
         </div>
-        <div className='flex w-full flex-col items-center h-1/2' id='auction-wheel'>
+        <div className='flex w-full p-3 flex-col items-center h-full' id='auction-wheel'>
           {/* <div id="homePageImage" className="w-1/3 h-1/3 bg-red-500">
             <img src={HomePageImage} alt="HomePage" className="w-full h-full object-cover"/>
           </div> */}
-          <div className='w-2/3 flex flex-col items-center'><AuctionWheel /></div>
+          <div className='w-full flex flex-col items-center h-full'><AuctionWheel /></div>
         </div>
-        <div id='div-why-us' className='my-2 w-full'>
-          <section className=''>
-            <h2>
-              Why Choose Us
-            </h2>
-            <div className='d-flex w-full flex-col lg:flex-row p-4'>
-              <div className='w-full h-[230px] flex flex-col border-solid border-2 border-gray-400 rounded-2xl ml-4 mr-2 m mb-2 text-[#8B0000]'>
-                <h4 className='text-center w-full justify-center pt-2'>Easy onboarding process</h4>
-                <p className='h-full text-wrap break-all flex items-center justify-center p-4'>Hello</p>
-              </div>
-
-              <div className='w-full h-[230px] flex flex-col border-solid border-2 border-gray-400 rounded-2xl  mx-2 mb-2 text-[#8B0000]'>
-                <h4 className='text-center w-full justify-center pt-2'>Easy onboarding process</h4>
-                <p className='h-full text-wrap break-all flex items-center justify-center p-4'>asdlllllllllllllllljlflahdoflhsdvnoihsuivdnhaicdiuacsiudniasniguagsdiucduisgi
-                  How\n
-                  are you
-                </p>
-              </div>
-
-              <div className='w-full h-[230px] flex flex-col border-solid border-2 border-gray-400 rounded-2xl mr-4 ml-2 mb-2 text-[#8B0000]'>
-                <h4 className='text-center w-full justify-center pt-2'>Easy onboarding process</h4>
-                <p className='h-full text-wrap break-all flex items-center justify-center p-4'>Hello</p>
-              </div>
-
-              <div className='w-full h-[230px] flex flex-col border-solid border-2 border-gray-400 rounded-2xl  mx-2 mb-2 text-[#8B0000]'>
-                <h4 className='text-center w-full justify-center pt-2'>Easy onboarding process</h4>
-                <p className='h-full text-wrap break-all flex items-center justify-center p-4'>Hello</p>
-              </div>
-
+        <div id='div-why-us' className='my-2 mb-4 w-full'>
+            < WhyAuctionHaiPage />
+        </div>
+        <div id='div-testimonials' className='w-full h-full mt-5 mb-8 bg-white text-orange-900'>
+            <div id='div-testimonial-corosaul' className='w-[1363px] h-[871px] '>
+                < TestimonialCorosaul />
             </div>
-          </section>
         </div>
-        <div id='div-testimonials' className='w-full h-1/2 p-3 bg-white text-orange-900'>
-            <section className='flex flex-col items-center'>
-              <h2>
-                Testimonials
-              </h2>
-              <div id='div-testimonial-corosaul' className='w-2/3 h-full '>
-                  < TestimonialCorosaul />
-              </div>
-            </section>
-        </div>
-        <div id='how-to-start' className='bg-white'>
+        {/* <div id='how-to-start' className='bg-white'>
           <section>
             <h2>Welcome, Auction Hai</h2>
             <p>How to start</p>
@@ -176,8 +144,8 @@ const HomePage = () => {
               
             </div>
           </section>
-        </div>
-        <div id='auction-table' className="rounded-lg shadow-lg p-6 min-h-[400px] flex items-center text-gray-500">
+        </div> */}
+        {/* <div id='auction-table' className="rounded-lg shadow-lg p-6 min-h-[400px] flex items-center text-gray-500">
           <div className="w-1/5 bg-white min-h-[400px] mr-2 rounded-lg">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Upcoming Auctions</h2>
             <div className="overflow-x-auto">
@@ -379,6 +347,11 @@ const HomePage = () => {
               </tbody>
             </table>
           </div>
+          </div>
+        </div> */}
+        <div id="auction-table w-full h-full mt-10">
+          <div className='flex flex-col w-[1363px] h-[667px]'>
+            < AuctionTable />
           </div>
         </div>
       </MainContainerDramatic>

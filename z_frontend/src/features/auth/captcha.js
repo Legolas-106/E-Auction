@@ -56,12 +56,13 @@ const CaptchaValidation = React.forwardRef((props,ref) => {
 
     const handleCaptchaSubmit = () => {
         if (userInput === captchaText) {
-            alert('Success');
+            return true;
         } else {
-            alert('Incorrect');
+            alert('Incorrect Captcha');
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
             initializeCaptcha(ctx);
+            return false;
         }
     };
 

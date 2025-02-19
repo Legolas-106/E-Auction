@@ -1,11 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import CaptchaValidation from "../../features/auth/captcha";
 import { authService } from "../../services/authServices";
 import OTPVerification from "../../features/auth/otpVerification";
 
 function SignUpPageTailwind() {
 	const [isFormValid, setIsFormValid] = useState(false);
-	const [currentStep, setCurrentStep] = useState(1);
+	const [currentStep, setCurrentStep] = useState(2);
+	const [otpVerified,setOtpVerified] = useState(false);
+	const [confirmPassword,setConfirmPassword] = useState("");
+	const [password,setPassword] = useState("");
+	const [passwordError,setPasswordError] = useState("");
 	const [formData, setFormData] = useState({
 		loginId: "",
 		correspondenceEmail: "",
@@ -15,6 +19,7 @@ function SignUpPageTailwind() {
 		contactName: "",
 		designation: "",
 		dateOfBirth: "",
+		password: "",
 	});
 
 	// State for validation errors
@@ -25,6 +30,7 @@ function SignUpPageTailwind() {
 		contactName: "",
 		designation: "",
 		dateOfBirth: "",
+		password: "",
 	});
 	//Company Details Validation
 	const [companyFormValid, setCompanyFormValid] = useState(false);
@@ -34,7 +40,7 @@ function SignUpPageTailwind() {
 		preferentialBidder: "",
 		registeredAddress: "",
 		partnersDirectors: "",
-		foreignCompany: "",
+		// foreignCompany: "",
 		city: "",
 		state: "",
 		postalCode: "",
@@ -68,53 +74,29 @@ function SignUpPageTailwind() {
 
 		console.log(isEmailVerified,isFormValid,companyFormValid);
 
-		if(isEmailVerified && isFormValid && companyFormValid){
-			console.log("Registering the User");
-
-			//Registering for the bidder signup request
-			const submissionData = {
-				// generalInformation: {
-				// 	...formData,
-				// },
-				// companyDetails: {
-				// 	...companyData,
-				// }
-			};
-			try{
-				const response = await authService.bidderRegister(submissionData);
-				if(response.token){
-				  localStorage.setItem('authToken',response.token);
-				  alert("Successfully Registered as bidder");
-				  window.location.href = "/";
-				}
-				else{
-					setIsEmailVerified(false);
-					setIsFormValid(false);
-					setCompanyFormValid(false);
-					throw new Error("Login ID Already Exist");
-
-				}
-			}catch(err){
-				console.log("Error occured while registering user ",err.message);
-				setErrors(prev=>({
-					...prev,
-					submit:err.message
-				}));
-				setIsEmailVerified(false);
-				setIsFormValid(false);
-				setCompanyFormValid(false);
-				setCurrentStep(1);
-			}
-
-		}
-
-		if(true){
+		if(isEmailVerified,isFormValid,companyFormValid){
 			console.log("Inside email verification");
 			//Send the email to the user 
 			try{
-				const response = await authService.requestOtp();
+				const response = await authService.requestOtp({"loginId":formData.loginId,"email":formData.correspondenceEmail});
 				console.log("Response for OTP Email Verification");
-				setOtpValue(response.otpValue);
+				if(response && response.otpValue == "Error"){
+					if(response.expiryTime.includes("Wait")){
+						console.log("Wait a minute beofre sending the otp request again");
+						alert("Kindly wait a minute before sending the request again");
+						return false;
+					}
+					else if(response.expiryTime.includes("Maximum")){
+						console.log("Maximum OTP request is reached for the Email ID");
+						alert("Maximum OTP request is reached for the requested Email");
+						return false;
+					}
+					else{
+						console.log("Error is : ",response.expiryTime);
+						alert("Error  : ",response.expiryTime);
+						return false;
+					}
+				}
 				setCurrentStep(2);
 			}catch(err){
 				alert(err.message);
@@ -143,8 +125,9 @@ function SignUpPageTailwind() {
 
 	// Validation functions
 	const validateEmail = (email) => {
-		if (!email) return "Email is required";
-		if (!emailRegex.test(email)) return "Invalid email format";
+		if (!email) {setIsEmailVerified(false);return "Email is required"};
+		if (!emailRegex.test(email)) {setIsEmailVerified(false);return "Invalid email format"};
+		setIsEmailVerified(true)
 		return "";
 	};
 
@@ -154,14 +137,42 @@ function SignUpPageTailwind() {
 		return "";
 	};
 
+	const handlePasswordChange = (e) =>{
+		if(confirmPassword && confirmPassword!=(e.target.value)){
+			setPasswordError("Password do not match the confirm Password");
+		}
+		else{
+			setPasswordError("");
+		}
+		let val = e.target.value;
+		setPassword(e.target.value);
+		console.log("Setting up the password");
+		setFormData((prev)=>({
+			...prev,
+			["password"] : val
+		}));
+	}
+
+	const handleConfirmPasswordChange = (e) =>{
+		setConfirmPassword(e.target.value);
+		if(password && password != (e.target.value)){
+			setPasswordError("Confirm Password doesnt match the password");
+		}
+		else{
+			setPasswordError("");
+		}
+	}
+
 	const validateRequired = (value, fieldName) => {
 		if (!value) return `${fieldName} is required`;
 		return "";
 	};
 
 	// Handle input changes
+	
 	const handleInputChange = (e) => {
-		const { name, value } = e.target;
+		const {name,value} = e.target;
+		console.log("Name is : ",name," Value is : ",value);
 		setFormData((prev) => ({
 			...prev,
 			[name]: value,
@@ -186,6 +197,9 @@ function SignUpPageTailwind() {
 			case "dateOfBirth":
 				error = validateRequired(value, "Date of birth");
 				break;
+			case "password":
+				error = validateRequired(value, "Password");
+				break;
 			default:
 				break;
 		}
@@ -205,8 +219,8 @@ function SignUpPageTailwind() {
 			contactName: validateRequired(formData.contactName, "Contact name"),
 			designation: validateRequired(formData.designation, "Designation"),
 			dateOfBirth: validateRequired(formData.dateOfBirth, "Date of birth"),
+			password: validateRequired(formData.password, "Password"),
 		};
-
 		setErrors(newErrors);
 
 		// Check if there are any errors
@@ -307,85 +321,109 @@ function SignUpPageTailwind() {
 
 	}
 
-	//Hnalding request again
-	const handleRequestAgain = async(e) =>{
-		e.preventDefault();
-		//Send the email to 
-		try{
+	const submitBidderDetails = async() =>{
+		console.log("Bidder Details and OTP is verified");
+		console.log("Now processign for the registration of the Bidder");
+	    const generalInfoValid = formValidation();
+    	const companyInfoValid = validateCompanyForm();
+		console.log(companyInfoValid,generalInfoValid,otpVerified);
+		if(companyInfoValid && generalInfoValid && otpVerified){
+			console.log("Company, general and otp is verified according to the flags");
+			const data = {
+				generalInformation : {
+					...formData
+				},
+				companyDetails : {
+					...companyData
+				}
+			}
+			console.log("Submission Data is : ",data);
+			try{
+				const response = await authService.bidderRegister(data);
+				if(response.token){
+				  localStorage.setItem('authToken',response.token);
+				  alert("Successfully Registered as bidder");
+				  window.location.href = "/";
+				}
+				else{
+					setIsEmailVerified(false);
+					setIsFormValid(false);
+					setCompanyFormValid(false);
+					throw new Error("Login ID Already Exist");
 
-		}catch(err){
-
+				}
+			}catch(err){
+				console.log("Error occured while registering user ",err.message);
+				setErrors(prev=>({
+					...prev,
+					submit:err.message
+				}));
+				setIsEmailVerified(false);
+				setIsFormValid(false);
+				setCompanyFormValid(false);
+				setCurrentStep(1);
+			}
 		}
 	}
-
-	const handleOtpVerification = (otp) => {
-		if (otp === "CoorectOtp"){
-			setIsEmailVerified(true);
-		}
-	}
+	console.log("Form Data is ",formData);
 	const captchaRef = useRef();
-  const handleSubmit = (e) => {
+  	const handleSubmit = async(e) => {
+		console.log("FormData is ",formData);
+		console.log("Comapny Data is ",companyData);
     // First validate both form sections
     // const generalInfoValid = formValidation();
     // const companyInfoValid = validateCompanyForm();
-	const generalInfoValid = true;
-	const companyInfoValid = true;
-    
-    // Update form validity state
-    // setIsFormValid(generalInfoValid && companyInfoValid);
-  
-    // if (!generalInfoValid) {
-    //   alert('Please check General Information section for errors');
-    //   return;
-    // }
-  
-    // if (!companyInfoValid) {
-    //   alert('Please check Company Information section for errors');
-    //   return;
-    // }
-  
-    // If form is valid, trigger the captcha validation
-    if (generalInfoValid && companyInfoValid) {
-      // This will trigger the existing handleCaptchaSubmit
-		console.log("Data is valid, sending to next step");
-	 	console.log(captchaRef);
-		if(captchaRef.current){
-			captchaRef.current.handleCaptchaSubmit();
+		const generalInfoValid = formValidation();
+		const companyInfoValid = validateCompanyForm();
+		
+		// Update form validity state
+		setIsFormValid(generalInfoValid);
+		setCompanyFormValid(companyInfoValid);
+		setIsEmailVerified(generalInfoValid);
+	
+		if (!generalInfoValid) {
+		console.log(errors);
+		alert('Please check General Information section for errors');
+		return;
 		}
-		goToNextStepOfForm(e);
-	}
-	else{
-		alert("Form data is not valid");
-		return false;
-	}
-	// const submissionData =  {};
+	
+		if (!companyInfoValid) {
+		alert('Please check Company Information section for errors');
+		return;
+		}
 
-	// 	console.log("Data is : ",submissionData);
-
-	// 	return false;
-	//   try{
-	// 	  const response = await authService.bidderRegister(submissionData);
-	// 	  if(response.token){
-	// 		localStorage.setItem('authToken',response.token);
-	// 		alert("Successfully Registered as bidder");
-	// 		window.location.href = "/";
-	// 	  }
-	//   }catch(err){
-	// 	  setErrors(prev=>({
-	// 		  ...prev,
-	// 		  submit:err.message
-	// 	  }));
-	//   }
+		if(password!=confirmPassword){
+			alert("Password and Confirm Password do not match");
+			return;
+		}
+		
+		// If form is valid, trigger the captcha validation
+		if (generalInfoValid && companyInfoValid) {
+		// This will trigger the existing handleCaptchaSubmit
+			console.log("Data is valid, sending to next step");
+			console.log(captchaRef);
+			if(captchaRef.current){
+				// let captchaValidation = captchaRef.current.handleCaptchaSubmit();
+				if(true){
+					const res = await authService.bidderRegister({generalInformation:{...formData},companyDetails:{...companyData}});
+				}
+				else{
+					console.log("Captcha Is wrong");
+				}
+			}
+		}
+		else{
+			alert("Form data is not valid");
+			return false;
+		}
     }
 
-
-
-
-  
-
+	useEffect(()=>{
+		console.log("Otp verified State has been changed ",otpVerified);
+	},[otpVerified]);
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-gray-100">
-			<div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-6xl w-full">
+		<div className="flex justify-center items-center w-full min-h-full py-4 bg-gray-100">
+			<div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-7xl w-full">
 				{currentStep === 1 &&
 				<div className="flex flex-wrap">
 					<h2 className="w-full pt-3">Register as Bidder with Auction Hai</h2>
@@ -462,167 +500,125 @@ function SignUpPageTailwind() {
 													value={formData.countryCode}
 													onChange={handleInputChange}
 													className="w-full h-[42px] bg-white mt-1 block border border-gray-300 rounded-md shadow-sm text-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
-													<option value="0">-Select-</option>
-													<option value="1">ABW (297)</option>
-													<option value="2">AFG (93)</option>
-													<option value="3">AGO (244)</option>
-													<option value="4">ALB (355)</option>
-													<option value="5">AND (376)</option>
-													<option value="6">ANT (599)</option>
-													<option value="7">ARG (54)</option>
-													<option value="8">ARM (374)</option>
-													<option value="9">ATA (672)</option>
-													<option value="10">AUS (61)</option>
-													<option value="11">AUT (43)</option>
-													<option value="12">AZE (994)</option>
-													<option value="13">BDI (257)</option>
-													<option value="14">BEL (32)</option>
-													<option value="15">BEN (229)</option>
-													<option value="16">BFA (226)</option>
-													<option value="17">BGD (880)</option>
-													<option value="18">BGR (359)</option>
-													<option value="19">BHR (973)</option>
-													<option value="20">BIH (387)</option>
-													<option value="21">BLR (375)</option>
-													<option value="22">BLZ (501)</option>
-													<option value="23">BOL (591)</option>
-													<option value="24">BRA (55)</option>
-													<option value="25">BRN (673)</option>
-													<option value="26">BTN (975)</option>
-													<option value="27">BWA (267)</option>
-													<option value="28">CAF (236)</option>
-													<option value="29">CAN (1)</option>
-													<option value="30">CCK (672)</option>
-													<option value="31">CHL (56)</option>
-													<option value="32">CHN (86)</option>
-													<option value="33">CIV (225)</option>
-													<option value="34">CMR (237)</option>
-													<option value="35">COG (242)</option>
-													<option value="36">COK (682)</option>
-													<option value="37">COL (57)</option>
-													<option value="38">COM (269)</option>
-													<option value="39">CPV (238)</option>
-													<option value="40">CRI (506)</option>
-													<option value="41">CUB (53)</option>
-													<option value="42">CXR (61)</option>
-													<option value="43">CYP (357)</option>
-													<option value="44">CZE (420)</option>
-													<option value="45">DEU (49)</option>
-													<option value="46">DJI (253)</option>
-													<option value="47">DNK (45)</option>
-													<option value="48">DZA (213)</option>
-													<option value="49">ECU (593)</option>
-													<option value="50">EGY (20)</option>
-													<option value="51">ERI (291)</option>
-													<option value="52">EST (372)</option>
-													<option value="53">ETH (251)</option>
-													<option value="54">FIN (358)</option>
-													<option value="55">FJI (679)</option>
-													<option value="56">FLK (500)</option>
-													<option value="57">FRA (33)</option>
-													<option value="58">FRO (298)</option>
-													<option value="59">GAB (241)</option>
-													<option value="60">GEO (995)</option>
-													<option value="61">GHA (233)</option>
-													<option value="62">GIB (350)</option>
-													<option value="63">GIN (224)</option>
-													<option value="64">GLP (590)</option>
-													<option value="65">GMB (220)</option>
-													<option value="66">GNB (245)</option>
-													<option value="67">GNQ (240)</option>
-													<option value="68">GRC (30)</option>
-													<option value="69">GRL (299)</option>
-													<option value="70">GTM (502)</option>
-													<option value="71">GUY (592)</option>
-													<option value="72">HKG (852)</option>
-													<option value="73">HND (504)</option>
-													<option value="74">HRV (385)</option>
-													<option value="75">HTI (509)</option>
-													<option value="76">HUN (36)</option>
-													<option value="77">IDN (62)</option>
-													<option value="78">IND (91)</option>
-													<option value="79">IOT (246)</option>
-													<option value="80">IRL (353)</option>
-													<option value="81">IRN (98)</option>
-													<option value="82">IRQ (964)</option>
-													<option value="83">ISL (354)</option>
-													<option value="84">ISR (972)</option>
-													<option value="85">ITA (39)</option>
-													<option value="86">JOR (962)</option>
-													<option value="87">JPN (81)</option>
-													<option value="88">KAZ (7)</option>
-													<option value="89">KEN (254)</option>
-													<option value="90">KGZ (996)</option>
-													<option value="91">KHM (855)</option>
-													<option value="92">KIR (686)</option>
-													<option value="93">KOR (82)</option>
-													<option value="94">KWT (965)</option>
-													<option value="95">LBN (961)</option>
-													<option value="96">LBR (231)</option>
-													<option value="97">LBY (218)</option>
-													<option value="98">LIE (423)</option>
-													<option value="99">LSO (266)</option>
-													<option value="100">LTU (370)</option>
-													<option value="101">LUX (352)</option>
-													<option value="102">LVA (371)</option>
-													<option value="103">MAC (853)</option>
-													<option value="104">MAR (212)</option>
-													<option value="105">MCO (377)</option>
-													<option value="106">MDG (261)</option>
-													<option value="107">MDV (960)</option>
-													<option value="108">MEX (52)</option>
-													<option value="109">MHL (692)</option>
-													<option value="110">MKD (389)</option>
-													<option value="111">MLI (223)</option>
-													<option value="112">MLT (356)</option>
-													<option value="113">MMR (95)</option>
-													<option value="114">MNE (382)</option>
-													<option value="115">MNG (976)</option>
-													<option value="116">MOZ (258)</option>
-													<option value="117">MRT (222)</option>
-													<option value="118">MTQ (596)</option>
-													<option value="119">MUS (230)</option>
-													<option value="120">MWI (265)</option>
-													<option value="121">MYS (60)</option>
-													<option value="122">MYT (269)</option>
-													<option value="123">NAM (264)</option>
-													<option value="124">NCL (687)</option>
-													<option value="125">NER (227)</option>
-													<option value="126">NGA (234)</option>
-													<option value="127">NIC (505)</option>
-													<option value="128">NIU (683)</option>
-													<option value="129">NLD (31)</option>
-													<option value="130">NOR (47)</option>
-													<option value="131">NPL (977)</option>
-													<option value="132">NRU (674)</option>
-													<option value="133">NZL (64)</option>
-													<option value="134">OMN (968)</option>
-													<option value="135">PAK (92)</option>
-													<option value="136">PAN (507)</option>
-													<option value="137">PCN (64)</option>
-													<option value="138">PER (51)</option>
-													<option value="139">PHL (63)</option>
-													<option value="140">PLW (680)</option>
-													<option value="141">PNG (675)</option>
-													<option value="142">POL (48)</option>
-													<option value="143">PRT (351)</option>
-													<option value="144">PRY (595)</option>
-													<option value="145">QAT (974)</option>
-													<option value="146">REU (262)</option>
-													<option value="147">ROM (40)</option>
-													<option value="148">RUS (70)</option>
-													<option value="149">RWA (250)</option>
-													<option value="150">SAU (966)</option>
-													<option value="151">SEN (221)</option>
-													<option value="152">SLV (503)</option>
-													<option value="153">SMR (378)</option>
-													<option value="154">SRB (381)</option>
-													<option value="155">STP (239)</option>
-													<option value="156">TCD (235)</option>
-													<option value="157">TLS (670)</option>
-													<option value="158">USA (1)</option>
-													<option value="159">WSM (684)</option>
-													<option value="160">XKX (383)</option>
+													<option value="">-Select-</option>
+													<option value="297">ABW (297)</option>
+													<option value="93">AFG (93)</option>
+													<option value="244">AGO (244)</option>
+													<option value="355">ALB (355)</option>
+													<option value="376">AND (376)</option>
+													<option value="599">ANT (599)</option>
+													<option value="54">ARG (54)</option>
+													<option value="374">ARM (374)</option>
+													<option value="672">ATA (672)</option>
+													<option value="61">AUS (61)</option>
+													<option value="43">AUT (43)</option>
+													<option value="994">AZE (994)</option>
+													<option value="257">BDI (257)</option>
+													<option value="32">BEL (32)</option>
+													<option value="229">BEN (229)</option>
+													<option value="226">BFA (226)</option>
+													<option value="880">BGD (880)</option>
+													<option value="359">BGR (359)</option>
+													<option value="973">BHR (973)</option>
+													<option value="387">BIH (387)</option>
+													<option value="375">BLR (375)</option>
+													<option value="501">BLZ (501)</option>
+													<option value="591">BOL (591)</option>
+													<option value="55">BRA (55)</option>
+													<option value="673">BRN (673)</option>
+													<option value="975">BTN (975)</option>
+													<option value="267">BWA (267)</option>
+													<option value="236">CAF (236)</option>
+													<option value="1">CAN (1)</option>
+													<option value="672">CCK (672)</option>
+													<option value="56">CHL (56)</option>
+													<option value="86">CHN (86)</option>
+													<option value="225">CIV (225)</option>
+													<option value="237">CMR (237)</option>
+													<option value="242">COG (242)</option>
+													<option value="682">COK (682)</option>
+													<option value="57">COL (57)</option>
+													<option value="269">COM (269)</option>
+													<option value="238">CPV (238)</option>
+													<option value="506">CRI (506)</option>
+													<option value="53">CUB (53)</option>
+													<option value="61">CXR (61)</option>
+													<option value="357">CYP (357)</option>
+													<option value="420">CZE (420)</option>
+													<option value="49">DEU (49)</option>
+													<option value="253">DJI (253)</option>
+													<option value="45">DNK (45)</option>
+													<option value="213">DZA (213)</option>
+													<option value="593">ECU (593)</option>
+													<option value="20">EGY (20)</option>
+													<option value="291">ERI (291)</option>
+													<option value="372">EST (372)</option>
+													<option value="251">ETH (251)</option>
+													<option value="358">FIN (358)</option>
+													<option value="679">FJI (679)</option>
+													<option value="500">FLK (500)</option>
+													<option value="33">FRA (33)</option>
+													<option value="298">FRO (298)</option>
+													<option value="241">GAB (241)</option>
+													<option value="995">GEO (995)</option>
+													<option value="233">GHA (233)</option>
+													<option value="350">GIB (350)</option>
+													<option value="224">GIN (224)</option>
+													<option value="590">GLP (590)</option>
+													<option value="220">GMB (220)</option>
+													<option value="245">GNB (245)</option>
+													<option value="240">GNQ (240)</option>
+													<option value="30">GRC (30)</option>
+													<option value="299">GRL (299)</option>
+													<option value="502">GTM (502)</option>
+													<option value="592">GUY (592)</option>
+													<option value="852">HKG (852)</option>
+													<option value="504">HND (504)</option>
+													<option value="385">HRV (385)</option>
+													<option value="509">HTI (509)</option>
+													<option value="36">HUN (36)</option>
+													<option value="62">IDN (62)</option>
+													<option value="91">IND (91)</option>
+													<option value="246">IOT (246)</option>
+													<option value="353">IRL (353)</option>
+													<option value="98">IRN (98)</option>
+													<option value="964">IRQ (964)</option>
+													<option value="354">ISL (354)</option>
+													<option value="972">ISR (972)</option>
+													<option value="39">ITA (39)</option>
+													<option value="962">JOR (962)</option>
+													<option value="81">JPN (81)</option>
+													<option value="7">KAZ (7)</option>
+													<option value="254">KEN (254)</option>
+													<option value="996">KGZ (996)</option>
+													<option value="855">KHM (855)</option>
+													<option value="686">KIR (686)</option>
+													<option value="82">KOR (82)</option>
+													<option value="965">KWT (965)</option>
+													<option value="961">LBN (961)</option>
+													<option value="231">LBR (231)</option>
+													<option value="218">LBY (218)</option>
+													<option value="423">LIE (423)</option>
+													<option value="266">LSO (266)</option>
+													<option value="370">LTU (370)</option>
+													<option value="352">LUX (352)</option>
+													<option value="371">LVA (371)</option>
+													<option value="853">MAC (853)</option>
+													<option value="212">MAR (212)</option>
+													<option value="377">MCO (377)</option>
+													<option value="261">MDG (261)</option>
+													<option value="960">MDV (960)</option>
+													<option value="52">MEX (52)</option>
+													<option value="692">MHL (692)</option>
+													<option value="389">MKD (389)</option>
+													<option value="223">MLI (223)</option>
+													<option value="356">MLT (356)</option>
+													<option value="95">MMR (95)</option>
+													<option value="382">MNE (382)</option>
+													<option value="976">MNG (976)</option>
+													<option value="258">MOZ (258)</option>
+													<option value="222">MRT (222)</option>
+													<option value="1">USA (1)</option>
 												</select>
 											</div>
 											<div id="div-id-mobile-number">
@@ -660,12 +656,12 @@ function SignUpPageTailwind() {
 											value={formData.title}
 											onChange={handleInputChange}
 											className="mt-1 h-[42px] bg-white block w-full border border-gray-300 rounded-md shadow-sm text-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
-											<option value="0">Select..</option>
-											<option value="1">Mr</option>
-											<option value="2">Mrs</option>
-											<option value="3">Ms</option>
-											<option value="4">Dr</option>
-											<option value="5">Shri</option>
+											<option value="">Select..</option>
+											<option value="Mr">Mr</option>
+											<option value="Mrs">Mrs</option>
+											<option value="Ms">Ms</option>
+											<option value="Dr">Dr</option>
+											<option value="Shri">Shri</option>
 										</select>
 									</div>
 									<div className="w-5/6 flex flex-col mx-2">
@@ -844,7 +840,7 @@ function SignUpPageTailwind() {
 										</small>
 									)}
 								</div>
-								<div className="mx-2 w-1/5 h-full flex flex-col pt-4">
+								{/* <div className="mx-2 w-1/5 h-full flex flex-col pt-4">
 									<label className="block text-lg text-center font-medium text-gray-700">
 										Foreign Company
 									</label>
@@ -872,7 +868,7 @@ function SignUpPageTailwind() {
 											/>
 										</div>
 									</div>
-								</div>
+								</div> */}
 							</div>
 							<div className="flex w-full h-full pt-3">
 								<div id="div-id-company-city" className="mx-2 w-1/3">
@@ -1053,7 +1049,33 @@ function SignUpPageTailwind() {
 				}
 				{currentStep === 1 &&
 				<div id="div-captcha-validation" className="flex w-full pt-1 px-8">
-					<CaptchaValidation ref={captchaRef} />
+					<div className="flex flex-row w-full">
+						<CaptchaValidation ref={captchaRef} />
+						<div className="flex flex-col w-1/2 items-center">
+							<div className="w-2/3">
+								<label className="form-label text-left">Password</label>
+								<input
+								type="password"
+								className="form-input text-md"
+								name="password"
+								value={formData.password}
+								onChange={handlePasswordChange}
+								/>
+							</div>
+
+							<div className="w-2/3 pt-2">
+								<label className="form-label text-left">Confirm Password</label>
+								<input
+								type="password"
+								className="form-input text-md"
+								name="confirmPassword"
+								value={confirmPassword}
+								onChange={handleConfirmPasswordChange}
+								/>
+							</div>
+							{passwordError && <p className="text-red-500 text-sm mt-2">{passwordError}</p>}
+						</div>
+					</div>
 				</div>
 				}
 				{currentStep === 1 &&
@@ -1070,12 +1092,12 @@ function SignUpPageTailwind() {
 				{currentStep === 2 && 	
 					<div className="w-full h-full flex flex-col items-center">
 						<h2 className="text-2xl p-2">Verify Your Email</h2>
-						<div className="p-4">
+						<div className="px-4">
 							<div>
 								<p>Kindly enter the OTP send on the Correspondence Email submit on Registration Form</p>
 								<div className="flex-row">
 
-									< OTPVerification onVerify={handleOtpVerification} onRequestAgain={handleRequestAgain} />
+									< OTPVerification onVerify={submitBidderDetails} setOtpVerified={setOtpVerified} data={{"email":formData.correspondenceEmail,"loginId":formData.loginId}}/>
 									<div>
 										<button className="m-3 p-2 right-0 border border-solid rounded-xl bg-gray-200 hover:bg-gray-500" onClick={handleBackToEditForm}>
 											Edit Data. Go Back

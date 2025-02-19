@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
+import AuctionFilterAuctionPublishedImage from '../public/icons/auctionFilter/AuctionPublished.svg';
+import AuctionFilterPlasticAuctionImage from '../public/icons/auctionFilter/GlassAuction.svg';
+import AuctionFilterPaperAuctionImage from '../public/icons/auctionFilter/PaperAuction.svg';
+import AuctionFilterEWasteAuctionImage from '../public/icons/auctionFilter/InstagramIcon.svg';
+import AuctionFilterGlassAuctionImage from '../public/icons/auctionFilter/GlassAuction.svg';
+import AuctionFilterUpcomingAuctionImage from '../public/icons/auctionFilter/UpcomingAuction.svg';
+import AuctionFilterCurrentAuctionImage from '../public/icons/auctionFilter/CurrentAuction.svg';
+import AuctionFilterClosedAuctionImage from '../public/icons/auctionFilter/ClosedAuction.svg';
 
 const AuctionWheel = () => {
   const [centerNumber, setCenterNumber] = useState(0);
+  const [auctionPublished,setAuctionPublished] = useState(null);
+  const [auctionUpcoming,setAuctionUpcoming] = useState(null);
+  const [auctionEnded,setAuctionEnded] = useState(null);
+  const [auctionListed,setAuctionListed] = useState(null);
   
   // Mapping divs to values
   const divValues = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -16,47 +28,147 @@ const AuctionWheel = () => {
   }
 
   return (
-    <div className="flex flex-col items-center h-[400px] w-full p-4">
+    <div className="flex flex-col items-center w-full p-4">
       {/* Tp Div */}
-      <div className='w-full flex flex-col items-center p-2'>
-        <div className='w-1/3 border border-double rounded-lg border-gray-700 p-2' onClick={handleDivClickMethod} data-value="total-auction-published">
-          Total Auction Published
+      <div className='w-full flex flex-row'>
+        <div id='' className='auction-filter' >
+            <div className='grid grid-cols-4 gap-4'>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterAuctionPublishedImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                      Auction Published
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterPlasticAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                    Plastic Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterPaperAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                      Paper Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterEWasteAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text h-full'>
+                      E-Waste Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
-
-      <div className='w-full flex flex-row p-2'>
-        <div className='w-1/3 flex flex-col' id='div-stat-wheel-left-options'>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total auction Publish
-            </div>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total Auction Closed
-            </div>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total Upcoming Auction
+      <div className='w-full flex mt-4 flex-row'>
+        <div id='' className='auction-filter' >
+            <div className='grid grid-cols-4 gap-4'>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterAuctionPublishedImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                      Auction Published
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterPlasticAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                    Plastic Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterPaperAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text'>
+                      Paper Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="auction-filter-grid-element">
+                <div className='flex flex-row'>
+                  <div className='w-1/2 auction-filter-image' >
+                    {/* SaerchFilter Image Image */}
+                    <img src={AuctionFilterEWasteAuctionImage} />
+                  </div>
+                  <div className='w-1/2 flex flex-col justify-between'>
+                    <div className='auction-filter-text h-full'>
+                      E-Waste Auction
+                    </div>
+                    <div className='auction-filter-text'>
+                      {auctionPublished || "00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
-
-        <div id='div-stat-wheel' className='w-1/3 flex flex-col justify-center'>
-              Number of Auction
-        </div>
-        <div id='div-stat-wheel-right-otpion' className='w-1/3 flex flex-col'>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total Plastic Auction
-            </div>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total Paper Auction
-            </div>
-            <div className='w-full p-2 border border-double rounded-lg my-2'>
-                Total E-Waste Auction
-            </div>
-        </div>
-      </div>
-      <div id='div-stat-wheel-bottom-option' className='w-full flex flex-col items-center p-2'>
-        <div className='w-1/3 border border-gray-700 rounded-lg p-2'>
-          Total Glass auction
-        </div>
-
       </div>
   </div>
   );

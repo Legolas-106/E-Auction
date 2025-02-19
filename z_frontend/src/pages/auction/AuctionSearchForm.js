@@ -1,8 +1,11 @@
-import React, { useState, useImperativeHandle } from "react";
+import React, { useState, useImperativeHandle,useEffect } from "react";
 import { RefreshCcw } from 'lucide-react';
 import { Card, CardContent } from '@mui/material';
+import { useAuth } from "../../services/auth/useAuthHook";
+import { BasicUserAuctionService } from "../../services/auction/basicUserService";
 
-const AuctionSearchForm = React.forwardRef((props, ref) => {
+const AuctionSearchForm = React.forwardRef(({setTheData}, ref) => {
+  const [data,setData] = useState(null);
   const [formData, setFormData] = useState({
     lotType: '',
     auctionId: '',
@@ -11,7 +14,41 @@ const AuctionSearchForm = React.forwardRef((props, ref) => {
     productCategory: '',
     fromDate: '',
     toDate: '',
+    auctionStatus : '',
   });
+
+  const populateTheFields = () =>{
+    console.log("Now populating the fields");
+    console.log(data);
+    setTheData(data);
+  }
+  const {getCurrUserInfo} = useAuth();
+  useEffect(() => {
+    const fetchSearchData = async () => {
+        try {
+            console.log("Inside searching the auctions");
+            const res = await BasicUserAuctionService.searchAuction(formData);
+            console.log("Res is ",res);
+            if (res?.success) {
+              console.log("Setting up the data");
+              setData(res);
+            } else {
+                console.warn("No valid data received.");
+            }
+        } catch (error) {
+            console.error("Error fetching auction information:", error);
+            setData({ success: false, message: error.message });
+        }
+    };
+
+    fetchSearchData();
+  }, []);
+
+  useEffect(()=>{
+    if(data){
+      populateTheFields();
+    }
+  },[data]);
 
   // Define visible fields - this could come from props or context
   const visibleFields = {

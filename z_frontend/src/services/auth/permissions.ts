@@ -33,10 +33,10 @@ interface Permission {
     'categories/scrap': { view: true },
     'categories/land': { view: true },
     'categories/timber': { view: true },
-    auctions: { view: true, create: true, edit: true, delete: true },
+    auctions: { view: true},
     // auctions: { view: true},
     bid: { view: true, bid: true, create:true, delete:true, edit:true },
-    sell: { view: true, create: true },
+    // sell: { view: true, create: true },
     buy: { view: true, create: true, edit:true, delete:true },
     notifications: { view: true },
     wishlist: { view: true, create: true, delete: true },
@@ -94,7 +94,7 @@ interface Permission {
     action: 'view' | 'create' | 'edit' | 'delete' | 'bid' | 'purchase' | 'sell'
   ): boolean => {
     const permissions = userType === 'BIDDER' ? bidderPermissions : vendorPermissions;
-    console.log("permision for ",userType,resource,action,permissions);
+    // console.log("permision for ",userType,resource,action,permissions);
     // console.log(permissions[resource]?.[action] || false);   
     return permissions[resource]?.[action] || false;
   };

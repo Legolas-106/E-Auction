@@ -48,6 +48,8 @@ const LoginPageMenu = React.forwardRef((props, ref) => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     setShowProfileMenu(false);
+    window.location.reload();
+    window.location.href="/home";
   };
   const handleClickOutside = (event) => {
     if (panelRef.current && !panelRef.current.contains(event.target)) {

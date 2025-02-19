@@ -106,10 +106,10 @@ function SignUpPageTailwind() {
 	const [companyData, setCompanyData] = useState({
 		companyName: "",
 		cin: "",
-		preferentialBidder: "",
+		preferentialVendor: "",
 		registeredAddress: "",
 		partnersDirectors: "",
-		foreignCompany: "",
+		// foreignCompany: "",
 		city: "",
 		state: "",
 		postalCode: "",
@@ -242,6 +242,7 @@ function SignUpPageTailwind() {
     if (generalInfoValid && companyInfoValid) {
       // This will trigger the existing handleCaptchaSubmit
       document.querySelector('[data-captcha-submit]')?.click();
+	  
     }
   };
 
@@ -642,16 +643,16 @@ function SignUpPageTailwind() {
 								</div>
 								<div className="mx-2 w-1/5">
 									<label className="block text-lg text-center font-medium text-gray-700">
-										Preferential Bidder
+										Preferential Vendor
 									</label>
 									<div className="flex flex-row justify-center">
 										<div className="flex p-2">
 											<label className="text-md">Yes</label>
 											<input
 												type="radio"
-												name="preferentialBidder"
+												name="preferentialVendor"
 												value="yes"
-												checked={companyData.preferentialBidder === "yes"}
+												checked={companyData.preferentialVendor === "yes"}
 												onChange={handleCompanyInputChange}
 												className="mt-1 w-full m-1"
 											/>
@@ -660,9 +661,9 @@ function SignUpPageTailwind() {
 											<label>No</label>
 											<input
 												type="radio"
-												name="preferentialBidder"
+												name="preferentialVendor"
 												value="no"
-												checked={companyData.preferentialBidder === "no"}
+												checked={companyData.preferentialVendor === "no"}
 												onChange={handleCompanyInputChange}
 												className="mt-1 w-full m-1"
 											/>
@@ -705,7 +706,7 @@ function SignUpPageTailwind() {
 										</small>
 									)}
 								</div>
-								<div className="mx-2 w-1/5 h-full flex flex-col pt-4">
+								{/* <div className="mx-2 w-1/5 h-full flex flex-col pt-4">
 									<label className="block text-lg text-center font-medium text-gray-700">
 										Foreign Company
 									</label>
@@ -733,7 +734,7 @@ function SignUpPageTailwind() {
 											/>
 										</div>
 									</div>
-								</div>
+								</div> */}
 							</div>
 							<div className="flex w-full h-full pt-3">
 								<div id="div-id-company-city" className="mx-2 w-1/3">

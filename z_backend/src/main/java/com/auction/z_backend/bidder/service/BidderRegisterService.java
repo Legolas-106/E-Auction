@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 import com.auction.z_backend.auth.dto.response.AuthResponse;
 import com.auction.z_backend.auth.dto.response.UserCompanyDetailsDTO;
 import com.auction.z_backend.auth.dto.response.UserDetailsDto;
+import com.auction.z_backend.auth.security.jwt.JwtTokenProvider;
+import com.auction.z_backend.auth.security.usr.UserTypes;
 import com.auction.z_backend.bidder.dto.request.BidderSignupRequest;
 import com.auction.z_backend.bidder.model.BidderCompanyDetails;
 import com.auction.z_backend.bidder.model.UserBidder;
 import com.auction.z_backend.bidder.repository.BidderUserRepository;
-import com.auction.z_backend.common.enums.UserTypes;
-import com.auction.z_backend.security.jwt.JwtTokenProvider;
+import com.auction.z_backend.common.utils.user.UserDetailUtility;
 import com.auction.z_backend.vendor.repository.VendorUserRepository;
 
 import jakarta.transaction.Transactional;
@@ -159,10 +160,11 @@ public class BidderRegisterService {
         newBidderDetails.setPostalCode(bidderDetails.getPostalCode());
         newBidderDetails.setPan_tan(bidderDetails.getPan_tan());
         newBidderDetails.setPartnersDetail(bidderDetails.getPartnersDetail());
-        newBidderDetails.setCompanyLegalStatus(bidderDetails.getCompanyLegalStatus());
-        newBidderDetails.setCompanyCategory(bidderDetails.getCompanyCategory());
+        newBidderDetails.setCompanyLegalStatus(UserDetailUtility.getCompanyType(bidderDetails.getCompanyLegalStatus()));
+        newBidderDetails.setCompanyCategory(UserDetailUtility.getMSMEUnitType(bidderDetails.getCompanyCategory()));
         newBidderDetails.setTypeOfUserRegistered(bidderDetails.getTypeOfUserRegistered());
         newBidderDetails.setYoestabilishing(bidderDetails.getYoestabilishing());
+        newBidderDetails.setCompanyNature(bidderDetails.getCompanyNature());
     
         return newBidderDetails;
     }

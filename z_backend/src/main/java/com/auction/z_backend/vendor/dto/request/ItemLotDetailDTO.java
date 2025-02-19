@@ -23,7 +23,5 @@ public class ItemLotDetailDTO {
     private String lotSellerContactNumber;
     private String lotEMD;
     private String lotAuctionAmount;
-    private String lotAuctionStartDate;
-    private String lotAuctionEndDate;
-    // private List<ImageDTO> images;
+
 }

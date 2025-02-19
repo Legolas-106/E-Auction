@@ -4,8 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.auction.z_backend.auth.security.usr.UserTypes;
 import com.auction.z_backend.bidder.model.BidderCompanyDetails;
-import com.auction.z_backend.common.enums.UserTypes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

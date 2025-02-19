@@ -1,6 +1,6 @@
 package com.auction.z_backend.vendor.dto.request;
 
-import com.auction.z_backend.common.enums.UserTypes;
+import com.auction.z_backend.auth.security.usr.UserTypes;
 import com.auction.z_backend.vendor.model.VendorCompanyDetails;
 
 import lombok.AllArgsConstructor;

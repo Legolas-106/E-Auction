@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.auction.z_backend.auth.dto.request.EmailVerificationOtpRequest;
 import com.auction.z_backend.auth.dto.request.LoginRequest;
+import com.auction.z_backend.auth.dto.request.OtpVerificationRequest;
 import com.auction.z_backend.auth.dto.response.AuthResponse;
 import com.auction.z_backend.auth.dto.response.EmailVerificationOtpResponse;
 import com.auction.z_backend.auth.dto.response.ErrorResponse;
+import com.auction.z_backend.auth.dto.response.OtpVerificationResponse;
 import com.auction.z_backend.auth.service.EmailVerificationService;
 import com.auction.z_backend.auth.service.LoginTokenService;
 
@@ -37,6 +40,11 @@ public class AuthenticationController {
         this.emailVerify = emailVerify;
         this.loginTokenService = loginTokenService;
     }
+
+    @GetMapping("test")
+    public ResponseEntity<?> test(){
+        return ResponseEntity.status(200).body("Requeat reached");
+    }
     
     @PostMapping("/requestOtp")
     public ResponseEntity<?> requestEmailVerification(@RequestBody @Valid EmailVerificationOtpRequest request, BindingResult bindingResult){
@@ -48,10 +56,16 @@ public class AuthenticationController {
                 .badRequest()
                 .body(new ErrorResponse("Validation failed: " + String.join(", ", errors)));
         }
+        System.out.println("Inside Email Verification Request");
 
         EmailVerificationOtpResponse response = emailVerify.generateOtp(request.getEmail());
 
         return ResponseEntity.status(200).body(response);
+    }
+
+    @PostMapping("/verifyOtp")
+    public ResponseEntity<OtpVerificationResponse> verifyOtp(@RequestBody OtpVerificationRequest request) {
+        return ResponseEntity.ok(emailVerify.verifyOtp(request));
     }
 
     @PostMapping("/login")

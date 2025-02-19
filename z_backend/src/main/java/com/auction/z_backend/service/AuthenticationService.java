@@ -3,8 +3,8 @@ package com.auction.z_backend.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.auction.z_backend.auth.security.jwt.JwtTokenProvider;
 import com.auction.z_backend.bidder.repository.BidderUserRepository;
-import com.auction.z_backend.security.jwt.JwtTokenProvider;
 import com.auction.z_backend.vendor.repository.VendorUserRepository;
 
 @Service

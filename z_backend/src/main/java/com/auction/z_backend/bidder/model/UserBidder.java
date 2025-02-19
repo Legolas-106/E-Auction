@@ -1,6 +1,6 @@
 package com.auction.z_backend.bidder.model;
 
-import com.auction.z_backend.common.enums.UserTypes;
+import com.auction.z_backend.auth.security.usr.UserTypes;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

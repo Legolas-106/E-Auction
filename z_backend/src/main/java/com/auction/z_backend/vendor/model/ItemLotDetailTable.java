@@ -40,8 +40,6 @@ public class ItemLotDetailTable {
     private String lotSellerContactNumber;
     private String lotEMD;
     private String lotAuctionAmount;
-    private String lotAuctionStartDate;
-    private String lotAuctionEndDate;
 
     @ManyToOne
     @JoinColumn(name="item_table_id")

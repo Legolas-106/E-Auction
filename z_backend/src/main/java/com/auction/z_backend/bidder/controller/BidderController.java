@@ -7,14 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auction.z_backend.auth.dto.response.AuthResponse;
+import com.auction.z_backend.auth.model.CustomUserDetails;
 import com.auction.z_backend.bidder.dto.request.BidderSignupRequest;
 import com.auction.z_backend.bidder.service.BidderRegisterService;
 
@@ -28,6 +33,11 @@ public class BidderController {
 
     public BidderController(BidderRegisterService registerTheBidder){
         this.registerTheBidder = registerTheBidder;   
+    }
+
+    @GetMapping("test")
+    public ResponseEntity<?> test(){
+        return ResponseEntity.status(200).body("Requeat reached");
     }
     
     @PostMapping("/register")
@@ -49,5 +59,17 @@ public class BidderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error occur in receiving service response "+e.getMessage());
         }
 
+    }
+
+    @GetMapping("checking")
+    @PreAuthorize("hasRole('BIDDER') and isAuthenticated()")
+    public ResponseEntity<?> checkAuthHeaders(@RequestParam String name){
+        System.err.println("FFFF----_Reached");
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.err.println(principle);
+        if(principle instanceof CustomUserDetails){
+            System.err.println(((CustomUserDetails) principle).getUsername());
+        }
+        return ResponseEntity.status(200).body("Hello Request Reached");
     }
 }

@@ -3,7 +3,11 @@ package com.auction.z_backend.vendor.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,14 +33,42 @@ public class ItemDetailTable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "User ID is required")
+    @Column(name = "user_id")
     private String user_id;
+
+    @NotBlank(message = "Login ID is required")
+    @Column(name = "login_id")
     private String loginId;
+
+    @Column(name = "company_name")
     private String companyName;
+
+    @Column(name = "auction_type")
     private String auctionType;
+
+    @Column(name = "product")
+    private String productType;
+
+    @NotBlank(message = "Auction title is required")
+    @Size(max = 255, message = "Auction title cannot exceed 255 characters")
+    @Column(name = "auction_title")
     private String auctionTitle;
+
+    @Column(name = "auction_description", columnDefinition = "TEXT") // For longer descriptions
     private String auctionDescription;
+
+    @Column(name = "auction_lot_type")
     private String auctionLotType;
-    private LocalDateTime createdAt;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now(); // Default to current time
+
+    @Column(name = "auction_active")
+    private Boolean auctionActive = null; // Default to null
+
+    @Column(name = "auction_ended")
+    private Boolean auctionEnded = null;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ItemLotDetailTable> itemLotDetails;

@@ -10,11 +10,11 @@ import com.auction.z_backend.auth.dto.request.LoginRequest;
 import com.auction.z_backend.auth.dto.response.AuthResponse;
 import com.auction.z_backend.auth.dto.response.UserCompanyDetailsDTO;
 import com.auction.z_backend.auth.dto.response.UserDetailsDto;
+import com.auction.z_backend.auth.security.jwt.JwtTokenProvider;
+import com.auction.z_backend.auth.security.usr.UserTypes;
 import com.auction.z_backend.bidder.model.BidderCompanyDetails;
 import com.auction.z_backend.bidder.model.UserBidder;
 import com.auction.z_backend.bidder.repository.BidderUserRepository;
-import com.auction.z_backend.common.enums.UserTypes;
-import com.auction.z_backend.security.jwt.JwtTokenProvider;
 import com.auction.z_backend.vendor.model.UserVendor;
 import com.auction.z_backend.vendor.model.VendorCompanyDetails;
 import com.auction.z_backend.vendor.repository.VendorUserRepository;
@@ -39,6 +39,8 @@ public class LoginTokenService {
 
     public AuthResponse authenticate(LoginRequest request) {
         // First try bidder table
+        
+
         Optional<UserBidder> bidderOpt = bidderUserRepository.findByLoginId(request.getLoginId());
         if (bidderOpt.isPresent()) {
             UserBidder bidder = bidderOpt.get();

@@ -1,6 +1,6 @@
 package com.auction.z_backend.auth.dto.response;
 
-import com.auction.z_backend.common.enums.UserTypes;
+import com.auction.z_backend.auth.security.usr.UserTypes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

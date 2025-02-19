@@ -1,8 +1,9 @@
 package com.auction.z_backend.vendor.model;
 
-import com.auction.z_backend.common.enums.UserTypes;
-
 import java.time.LocalDateTime;
+
+import com.auction.z_backend.auth.security.usr.UserTypes;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

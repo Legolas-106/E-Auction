@@ -183,7 +183,7 @@ const AuctionTable = () =>{
                         <button 
                             value="trending_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
                                 currentOption === "trending_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[75px]`}
                         >
@@ -192,7 +192,7 @@ const AuctionTable = () =>{
                         <button 
                             value="upcoming_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
                                 currentOption === "upcoming_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[154px]`}
                         >
@@ -201,7 +201,7 @@ const AuctionTable = () =>{
                         <button 
                             value="ongoing_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
                                 currentOption === "ongoing_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[233px]`}
                         >

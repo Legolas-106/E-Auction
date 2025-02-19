@@ -85,15 +85,12 @@ const HomePage = () => {
       {/* <main className="flex-grow container mx-auto px-4 py-4bg-cover bg-center bg-no-repeat"> */}
 
         <MainContainerDramatic>  
-        <div id='banner-portion' className='w-full h-1/2'>
-          {/* <div className="h-64 bg-gray-200 w-full -mt-4"> */}
-            {/* <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d7012.658038895218!2d77.19080769999998!3d28.499747099999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1sen!2sin!4v1735827302141!5m2!1sen!2sin" className="w-full h-full" loading="lazy"></iframe> */}
-          {/* </div> */}
+        {/* <div id='banner-portion' className='w-full h-1/2'>
           <div className='d-flex w-full h-1/2' style={{ width: '100%', margin: '0 auto', backgroundImage :'linear-gradient(to right, black, grey, black)'}}> 
             < IndividualIntervalsExample />
           </div>
-        </div>  
-        <div id="sort-auction" className="flex flex-grow mb-6 w-full p-0">
+        </div>   */}
+        {/* <div id="sort-auction" className="flex flex-grow mb-6 w-full p-0 z-0">
 
           <div className="grid grid-cols-5 gap-4 bg-white p-3 rounded-lg shadow-md w-full">
             <button className="flex-1 px-4 py-3 text-sm text-gray-700 bg-gray-50 hover:bg-blue-500 hover:text-white rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
@@ -112,6 +109,9 @@ const HomePage = () => {
               Auctions By Prod Category
             </button>
           </div>
+        </div> */}
+        <div className='w-full h-[129px]'>
+
         </div>
         <div className='flex w-full p-3 flex-col items-center h-full' id='auction-wheel'>
           {/* <div id="homePageImage" className="w-1/3 h-1/3 bg-red-500">

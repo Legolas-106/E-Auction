@@ -106,7 +106,7 @@ module.exports = {
           "@apply mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500": "",
         },
         ".custom-header": {
-          "@apply flex flex-col w-full h-[166px] m-2 top-[14px] left-[38px] rounded-[500px] border-[1px] mr-[40px] ml-[40px] mb-[15px] pr-[40px] pl-[40px] pb-[40px]": "",
+          "@apply flex flex-col bg-[#7E5230] items-center justify-center w-full h-[166px] m-2 left-[38px] rounded-[500px] border-[1px] mr-[40px] ml-[40px] mb-[15px] pr-[40px] pl-[40px]": "",
         },
         ".auction-filter-grid-element":{
           "@apply border py-[28px] px-[40px] rounded-[96px] bg-grayCustom": "",

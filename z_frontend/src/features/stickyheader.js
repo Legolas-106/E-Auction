@@ -36,8 +36,8 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
   return (
     <>
       {/* Original Header */}
-      <div className='w-full flex items-center flex-col justify-center'>
-        <div className='w-full h-[111px] flex flex-row justify-between'>
+      <div className='w-full flex items-center flex-col justify-center gap-[10px]'>
+        <div className='w-full h-full flex flex-row justify-between'>
             {/* <div className='w-[185px] h-[60px] mt-[25px] flex justify-start rounded-r-[50px] bg-[#0A326D]'>
                 <div className='w-full h-full flex flex-row items-center justify-center space-x-2'>
                     <p className='text-[21px] font-libre text-white mb-0'>Settings</p>
@@ -56,7 +56,7 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
                 </div>
             </div> */}
             < SettingNavBarExpandingDiv />
-            <div className='flex flex-col items-center justify-center rounded-l-[50px] bg-[#0A326D] w-[200px] h-[60px] mt-[25px]'>
+            <div className='flex flex-col items-center justify-center rounded-l-[50px] bg-[#0A326D] w-[200px]  mt-[10px]'>
                 <a className='no-underline text-[16px] font-libre text-white' > Skip To Main Content </a>
             </div>
         </div>
@@ -108,14 +108,14 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
       {/* Sticky Header */}
       <header 
         className={`
-          fixed top-0 left-0 w-full z-50
+          fixed top-0 left-0 w-full z-50 my-2 bg-transparent opacity-0
           transition-all duration-300 ease-in-out
           ${isSticky ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
           ${isTransitioning ? 'pointer-events-none' : ''}
           bg-white shadow-md
         `}
       >
-        <div className="max-w-7xl mx-auto px-4 h-16">
+        <div className="max-w-full bg-[#8F8F8F] mx-[40px] rounded-[50px] items-center px-4 h-16">
           <div className="flex items-center justify-between h-full">
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2 pt-2">

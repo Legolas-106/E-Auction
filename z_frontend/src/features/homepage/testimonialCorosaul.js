@@ -145,7 +145,7 @@ const TestimonialCorosaul = () => {
                     </svg>
                 </span>
             </p>
-            <div className="relative w-full h-full">
+            <div className="relative flex w-full h-full items-center justify-center">
             <TestimonialCircles />
             </div>
         </section>

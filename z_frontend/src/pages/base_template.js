@@ -441,158 +441,148 @@ const Layout = () => {
       navigate(item.link);
     }
 
-    // const Navigation = ({ navItems, checkPermission }) => {
-    //   useEffect(() => {
-    //     navItems.forEach((item) => {
-    //       if (!item.subItems) {
-    //         if (item.resource) {
-    //           console.log(`Permission for ${item.name}:`, checkPermission(item.resource, item.action));
-    //         }
-    //       } else {
-    //         item.subItems.forEach((subItem) => {
-    //           if (!subItem.subItems) {
-    //             console.log(`Permission for ${subItem.name}:`, checkPermission(subItem.resource, subItem.action));
-    //           }
-    //         });
-    //       }
-    //     });
-    //   }, [navItems, checkPermission]);
-    // }
-    // console.log("Nav Items are : ",navItems);
+    const AuctionDirectLinks = [
+      {label : "Active Auction", link : "/searchAuction/activeAuc"},
+      {label : "Result of Auction", link : "/searchAuction/endedAuc"},
+      {label : "Auction By Value", link : "/searchAuction/searchFilter"},
+      {label : "Auction By Org", link : "/searchAuction/searchFilter"},
+      {label : "Auction Prod Category", link : "/searchAuction/searchFilter"}
+    ];
 
-    const MenuItem = ({ item, index }) => {
-      console.log("Menu bhai ke pass gaya call");
+
+  //   const MenuItem = ({ item, index }) => {
+  //     console.log("Menu bhai ke pass gaya call");
       
-      const [isHovered, setIsHovered] = useState(false);
-      if (!item.subItems) {
-        console.log("Menu bhai 1 render kiyela");
+  //     const [isHovered, setIsHovered] = useState(false);
+  //     if (!item.subItems) {
+  //       console.log("Menu bhai 1 render kiyela");
 
-        return (
-          <li className="">
-            {checkPermission(item.resource, item.action) && (
-                  <Link 
-                    to={item.link || '/'}
-                    className="no-underline px-1 py-2 d-flex align-items-center transition-colors rounded font-libre text-[18px] leading-[18px] focus:outline-none"
-                  >
-                    <motion.div
-            className="flex items-center gap-2"
-            initial="initial"
-            whileHover="hover"
-            animate="initial"
-          >
-            <motion.span
-              className="text-orange-500"
-              variants={{
-                initial: {
-                  opacity: 0,
-                  y: -20,
-                  transition: { duration: 0.2 }
-                },
-                hover: { 
-                  opacity: 1, 
-                  y: 0,
-                  transition: { duration: 0.2 }
-                }
-              }}
-            >
-              •
-            </motion.span>
+  //       return (
+  //         <li className="">
+  //           {checkPermission(item.resource, item.action) && (
+  //                 <Link 
+  //                   to={item.link || '/'}
+  //                   className="no-underline px-1 py-2 d-flex align-items-center transition-colors rounded font-libre text-[18px] leading-[18px] focus:outline-none"
+  //                 >
+  //                   <motion.div
+  //           className="flex items-center gap-2"
+  //           initial="initial"
+  //           whileHover="hover"
+  //           animate="initial"
+  //         >
+  //           <motion.span
+  //             className="text-orange-500"
+  //             variants={{
+  //               initial: {
+  //                 opacity: 0,
+  //                 y: -20,
+  //                 transition: { duration: 0.2 }
+  //               },
+  //               hover: { 
+  //                 opacity: 1, 
+  //                 y: 0,
+  //                 transition: { duration: 0.2 }
+  //               }
+  //             }}
+  //           >
+  //             •
+  //           </motion.span>
             
-            <motion.span
-              variants={{
-                initial: {
-                  color: '#ffffff', // text-white
-                  fontWeight: 400,
-                  transition: { duration: 0.2 }
-                },
-                hover: { 
-                  color: '#f97316', // text-orange-500
-                  fontWeight: 600,
-                  transition: { duration: 0.2 }
-                }
-              }}
-            >
-              {item.name}
-            </motion.span>
-          </motion.div>
-                  </Link>
-            )}
-          </li>
-        );
-      }
-      console.log("Menu bhai 2 render kiyela");
+  //           <motion.span
+  //             variants={{
+  //               initial: {
+  //                 color: '#ffffff', // text-white
+  //                 fontWeight: 400,
+  //                 transition: { duration: 0.2 }
+  //               },
+  //               hover: { 
+  //                 color: '#f97316', // text-orange-500
+  //                 fontWeight: 600,
+  //                 transition: { duration: 0.2 }
+  //               }
+  //             }}
+  //           >
+  //             {item.name}
+  //           </motion.span>
+  //         </motion.div>
+  //                 </Link>
+  //           )}
+  //         </li>
+  //       );
+  //     }
+  //     console.log("Menu bhai 2 render kiyela");
 
-      return (
+  //     return (
 
-          checkPermission(item.resource, item.action) && (<li className="nav-item dropdown"
-              onMouseEnter={() => handleDropdownEnter(index)}
-              onMouseLeave={handleDropdownLeave}>
-               <Link className="text-white px-3 py-2 d-flex align-items-center gap-1 transition-colors hover:bg-blue-700 rounded"
-                 to={item.link || "#"}
-                 onMouseEnter={() => setIsHovered(true)}
-                 onMouseLeave={() => setIsHovered(false)}>
-                  {item.name}
-                  <ChevronDown size={16} 
-                      className={`transition-transform duration-200 ${isHovered || activeDropdown === index ? 'rotate-180' : ''}`}/>
-              </Link>
+  //         checkPermission(item.resource, item.action) && (<li className="nav-item dropdown"
+  //             onMouseEnter={() => handleDropdownEnter(index)}
+  //             onMouseLeave={handleDropdownLeave}>
+  //              <Link className="text-white px-3 py-2 d-flex align-items-center gap-1 transition-colors hover:bg-blue-700 rounded"
+  //                to={item.link || "#"}
+  //                onMouseEnter={() => setIsHovered(true)}
+  //                onMouseLeave={() => setIsHovered(false)}>
+  //                 {item.name}
+  //                 <ChevronDown size={16} 
+  //                     className={`transition-transform duration-200 ${isHovered || activeDropdown === index ? 'rotate-180' : ''}`}/>
+  //             </Link>
             
-              {(activeDropdown === index) && (
-                  <div className="dropdown-menu show border-0 mt-0 text-black bg-blue-800 p-0 animate-fadeIn">
-                      {item.subItems.map((subItem, subIndex) => (
-                          <DropdownItem 
-                              key={subIndex} 
-                              item={subItem} 
-                              isNested={true}
-                          />
-                      ))}
-                  </div>
-              )}
-          </li>
-        )
-      );
-    };
+  //             {(activeDropdown === index) && (
+  //                 <div className="dropdown-menu show border-0 mt-0 text-black bg-blue-800 p-0 animate-fadeIn">
+  //                     {item.subItems.map((subItem, subIndex) => (
+  //                         <DropdownItem 
+  //                             key={subIndex} 
+  //                             item={subItem} 
+  //                             isNested={true}
+  //                         />
+  //                     ))}
+  //                 </div>
+  //             )}
+  //         </li>
+  //       )
+  //     );
+  //   };
 
-  const DropdownItem = ({ item, isNested }) => {
-      const [showSubMenu, setShowSubMenu] = useState(false);
+  // const DropdownItem = ({ item, isNested }) => {
+  //     const [showSubMenu, setShowSubMenu] = useState(false);
 
-      if (!item.subItems) {
-        return (
+  //     if (!item.subItems) {
+  //       return (
           
-          checkPermission(item.resource, item.action) && (
-            <Link              
-            className="dropdown-item text-black py-2 px-4 transition-colors hover:bg-blue-700"
-              to={item.link}
-            >
-              {item.name}
-            </Link>
-          )
-        );
-      }
+  //         checkPermission(item.resource, item.action) && (
+  //           <Link              
+  //           className="dropdown-item text-black py-2 px-4 transition-colors hover:bg-blue-700"
+  //             to={item.link}
+  //           >
+  //             {item.name}
+  //           </Link>
+  //         )
+  //       );
+  //     }
 
-      return (
-          checkPermission(item.resource,item.action) &&   
-        (<div className="dropdown-submenu position-relative"
-               onMouseEnter={() => setShowSubMenu(true)}
-               onMouseLeave={() => setShowSubMenu(false)}>
-              <Link className="dropdown-item text-black py-2 px-4 d-flex align-items-center justify-content-between transition-colors hover:bg-blue-700"
-                 to={item.link || "#"}>
-                  {item.name}
-                  <ChevronRight size={16} />
-              </Link>
-              {showSubMenu && (
-                  <div className="dropdown-menu show position-absolute top-0 start-100 bg-blue-800 border-0">
-                      {item.subItems.map((subItem, idx) => (
-                          <DropdownItem 
-                              key={idx} 
-                              item={subItem} 
-                              isNested={true}
-                          />
-                      ))}
-                  </div>
-              )}
-          </div>)
-      );
-    };
+  //     return (
+  //         checkPermission(item.resource,item.action) &&   
+  //       (<div className="dropdown-submenu position-relative"
+  //              onMouseEnter={() => setShowSubMenu(true)}
+  //              onMouseLeave={() => setShowSubMenu(false)}>
+  //             <Link className="dropdown-item text-black py-2 px-4 d-flex align-items-center justify-content-between transition-colors hover:bg-blue-700"
+  //                to={item.link || "#"}>
+  //                 {item.name}
+  //                 <ChevronRight size={16} />
+  //             </Link>
+  //             {showSubMenu && (
+  //                 <div className="dropdown-menu show position-absolute top-0 start-100 bg-blue-800 border-0">
+  //                     {item.subItems.map((subItem, idx) => (
+  //                         <DropdownItem 
+  //                             key={idx} 
+  //                             item={subItem} 
+  //                             isNested={true}
+  //                         />
+  //                     ))}
+  //                 </div>
+  //             )}
+  //         </div>)
+  //     );
+  //   };
   console.log("User Status :",isLoggedIn);
   const loginRef = useRef();
   const location = useLocation();
@@ -695,22 +685,27 @@ isHeaderVersion={true} // Flag to adjust styling for header placement
 
   return (
       <div className="min-vh-100 d-flex flex-col">
-        <div className="flex flex-col items-center w-full h-[256px] bg-cover bg-center bg-no-repeat" style={{backgroundImage:{HeaderImage}}}>
-          {/* <img src={HeaderImage} className="object-cover" /> */}
-          <StickyHeader
-            LogoImage={LogoImage}
-            MenuItemsNav={MenuItemsNav}
-            SearchBarNav={SearchBarNav}
-          />
+        <div className="relative h-[700px]" style={{backgroundImage:`url(${HeaderImage})`,    backgroundSize: "100% 100%", // Forces it to stretch
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",}}>
+          <div className="flex flex-col items-center w-full h-[256px] bg-cover bg-center bg-no-repeat" style={{backgroundImage:{HeaderImage}}}>
+            {/* <img src={HeaderImage} className="object-cover" /> */}
+            <StickyHeader
+              LogoImage={LogoImage}
+              MenuItemsNav={MenuItemsNav}
+              SearchBarNav={SearchBarNav}
+            />
+          </div>
+          <SiteMap />
+
         </div>
-        <SiteMap />
         <main className="flex-grow-1 bg-light">
             <div className="py">
                 <Outlet />
             </div>
         </main>
 
-        <footer className="footer-class w-[1440px] h-[400px] gap-[10px] rounded-tl-[20px] bg-black rounded-tr-[20px] pt-[40px] pr-[28px] pb-[40px] pl-[28px] " style={{}}>
+        <footer className="footer-class w-full h-[580px] gap-[10px] rounded-tl-[20px] bg-black rounded-tr-[20px] pt-[40px] pr-[28px] pb-[40px] pl-[28px] " style={{}}>
           < FooterElement />
         </footer>
       </div>

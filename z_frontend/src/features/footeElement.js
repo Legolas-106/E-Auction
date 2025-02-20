@@ -2,7 +2,7 @@ import React from "react";
 
 const FooterElement = () =>{
     return (
-        <div className="flex flex-col justify-between w-[1384px] h-[320px]">
+        <div className="flex flex-col justify-between w-full h-[320px]">
             <div className="footer-info-items flex flex-row justify-between w-full h-[202px]">
                 <div className="flex flex-col justify-between w-[167px] h-[202px]">
                     <h3 className="text-white text-[21px] font-light text-left font-libre">About Us</h3>

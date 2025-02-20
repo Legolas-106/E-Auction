@@ -5,8 +5,7 @@ const Card = ({ number, title, description }) => {
   
     return (
       <div 
-        className="relative w-[264px] h-[364px] bg-black rounded-[2px] transition-all duration-300 ease-in-out overflow-hidden"
-        style={{ width: isHovered ? '552px' : '264px' }}
+        className={`relative ${isHovered ? "w-2/6" : "w-1/6" } h-[364px] bg-black rounded-[2px] transition-all duration-300 ease-in-out overflow-hidden`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -16,7 +15,11 @@ const Card = ({ number, title, description }) => {
             <h4 className="font-libre font-light text-[32px] leading-[32px] text-white text-left">
               {title}
             </h4>
-            <div className="mt-auto">
+            <div className="mt-auto"
+                        style={{
+                          transition: 'opacity 500ms ease-out, transform 500ms ease-out, opacity 500ms ease-in, transform 500ms ease-in'
+                        }}
+            >
               <span className="flex justify-center items-center w-1/2 -rotate-90 font-libre font-bold text-[94px] leading-[94px] text-[#FE7008]">
                 {String(number).padStart(2, '0')}
               </span>
@@ -79,7 +82,7 @@ const WhyAuctionHaiPage = () => {
                 </svg>
             </span>
         </h2>
-        <div className="flex justify-between w-full max-w-[1500px] gap-[10px]">
+        <div className="flex justify-between w-full gap-[10px]">
             {cards.map((card) => (
             <Card
                 key={card.number}

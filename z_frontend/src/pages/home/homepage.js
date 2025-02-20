@@ -15,7 +15,13 @@ const HomePage = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   
   // Your existing navItems array stays the same
-
+  const AuctionDirectLinks = [
+    {label : "Active Auction", link : "/searchAuction/activeAuc"},
+    {label : "Result of Auction", link : "/searchAuction/endedAuc"},
+    {label : "Auction By Value", link : "/searchAuction/searchFilter"},
+    {label : "Auction By Org", link : "/searchAuction/searchFilter"},
+    {label : "Auction Prod Category", link : "/searchAuction/searchFilter"}
+  ];
   const MenuItem = ({ item }) => {
     if (!item.subItems) {
       return (
@@ -110,8 +116,14 @@ const HomePage = () => {
             </button>
           </div>
         </div> */}
-        <div className='w-full h-[129px]'>
-
+        <div className="fixed w-full flex items-center justify-center px-[39px] bottom-[60px] z-50">
+            <div className="w-full flex items-center justify-center rounded-full bg-white/50 border-2 border-gray-400 backdrop-blur-[45.65px] gap-[28px] py-[34px] px-[20px]">
+                {AuctionDirectLinks.map((items)=>(
+                  <div className="w-full flex items-center justify-center bg-black rounded-[50px] px-[34px] py-[20px]">
+                      <a className="no-underline font-libre text-[21px] text-white text-nowrap" href={items.link}>{items.label}</a>
+                  </div>
+                ))}
+            </div>
         </div>
         <div className='flex w-full p-3 flex-col items-center h-full' id='auction-wheel'>
           {/* <div id="homePageImage" className="w-1/3 h-1/3 bg-red-500">
@@ -123,7 +135,7 @@ const HomePage = () => {
             < WhyAuctionHaiPage />
         </div>
         <div id='div-testimonials' className='w-full h-full mt-5 mb-8 bg-white text-orange-900'>
-            <div id='div-testimonial-corosaul' className='w-[1363px] h-[871px] '>
+            <div id='div-testimonial-corosaul' className='w-full h-[871px] '>
                 < TestimonialCorosaul />
             </div>
         </div>
@@ -350,7 +362,7 @@ const HomePage = () => {
           </div>
         </div> */}
         <div id="auction-table w-full h-full mt-10">
-          <div className='flex flex-col w-[1363px] h-[667px]'>
+          <div className='flex flex-col w-full h-[667px]'>
             < AuctionTable />
           </div>
         </div>

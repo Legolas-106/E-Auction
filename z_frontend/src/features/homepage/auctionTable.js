@@ -176,14 +176,14 @@ const AuctionTable = () =>{
 
     const Table = () =>{
         return (
-            <div className="w-[1360px] absolute flex items-center justify-center h-[596px] bg-black rounded-tl-[20px] rounded-br-[20px]">
-                <div className="absolute flex flex-row top-0 left-0 w-[1360px] h-[596px]">
-                    <div className="absolute top-[25px] left-[15px] w-[244px] h-[546px] flex flex-col rounded-l-[10px] border-[1px]">
+            <div className="w-full flex items-center justify-center h-[596px] bg-black rounded-tl-[20px] rounded-br-[20px]">
+                <div className=" flex flex-row w-full h-[596px]">
+                    <div className="left-[15px] w-[244px] h-full flex flex-col rounded-l-[10px] border-[1px]">
                         {/* Auction Table buttons */}
                         <button 
                             value="trending_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "trending_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[75px]`}
                         >
@@ -192,7 +192,7 @@ const AuctionTable = () =>{
                         <button 
                             value="upcoming_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "upcoming_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[154px]`}
                         >
@@ -201,7 +201,7 @@ const AuctionTable = () =>{
                         <button 
                             value="ongoing_auction" 
                             onClick={handleOptionChange} 
-                            className={`absolute w-[241px] left-[18px] text-[21px] h-[58px] text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "ongoing_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[233px]`}
                         >
@@ -215,34 +215,34 @@ const AuctionTable = () =>{
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }} // Smooth transition
-                        className="absolute flex flex-col overflow-y-auto w-[1070px] h-[546px] left-[259px] top-[25px] rounded-tr-[10px] rounded-br-[10px] bg-white">
+                        className=" flex flex-col overflow-y-auto w-full h-[546px] left-[259px] top-[25px] rounded-tr-[10px] rounded-br-[10px] bg-white">
 
                         {tableData && tableKeys ? (
-                            <table className="absolute h-full w-full border-collapse border overflow-y-auto border-gray-300 ">
-                                <thead className="pt-[36px]">
-                                    <tr className="bg-gray-200  p-3 left-[25px] w-[1004px] h-[73px] border-b-2 border-[#3C3C3C]">
+                            <table className=" h-full w-full border-collapse border overflow-y-auto border-gray-300">
+                                <thead className="pt-[36px] min-h-1/6 max-h-[74px]">
+                                    <tr className="bg-gray-200 flex w-full p-3 h-full border-b-2 border-[#3C3C3C]">
                                         {tableKeys.map((key) => (
-                                            <th key={key} className=" px-4 pt-2 text-center font-[300] text-[21px] leading-[21px] tracking-[0%] font-libre" style={{}}>
+                                            <th key={key} className=" px-4 w-full pt-2 text-center font-[300] text-[21px] leading-[21px] tracking-[0%] font-libre" style={{}}>
                                                 {key.charAt(0).toUpperCase() + key.slice(1)}
                                             </th>
                                         ))}
-                                        <th key="view" className="px-4 pt-2 text-center font-[300] text-[21px] leading-[21px] tracking-[0%] font-libre">
+                                        <th key="view" className="px-4 pt-2 w-full h-full flex text-center font-[300] text-[21px] leading-[21px] tracking-[0%] font-libre">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="w-full h-full flex flex-col items-center justify-center">
                                     {tableData.map((row, index) => (
-                                        <tr key={index} className="text-center border-b-[1px] border-[#B3B3B3]">
+                                        <tr key={index} className="text-center w-full min-h-[74px] flex items-center border-b-[1px] border-[#B3B3B3]">
                                             {tableKeys.map((key) => (
-                                                <td key={key} className= {`px-4 py-2 ${key==="title"? "font-[600px] text-customOrange":"font-[300px]"} text-[21px] leading-[21px] tracking-[0%] font-libre`}>
+                                                <td key={key} className= {`px-4 w-full h-full flex py-2 ${key==="title"? "font-[600px] text-customOrange":"font-[300px]"} text-[21px] leading-[21px] tracking-[0%] font-libre`}>
                                                     {row[key]}
                                                 </td>
                                             ))} 
-                                            <td>
-                                            <button className="w-[75px] h-[34px] bg-[#0A326D] text-[#FAFAFA] rounded-full text-[21px] font-[300] leading-[100%]">
-                                                            View
-                                            </button>
+                                            <td className="w-full h-full flex">
+                                                <button className="w-[75px] h-[34px] bg-[#0A326D] text-[#FAFAFA] rounded-full text-[21px] font-[300] leading-[100%]">
+                                                                View
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}

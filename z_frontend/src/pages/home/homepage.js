@@ -86,7 +86,8 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
+    <>
+    <div className="min-h-screen w-full flex flex-col relative overflow-y-auto" id="main-div-id">
 
       {/* <main className="flex-grow container mx-auto px-4 py-4bg-cover bg-center bg-no-repeat"> */}
 
@@ -116,7 +117,7 @@ const HomePage = () => {
             </button>
           </div>
         </div> */}
-        <div className="fixed w-full flex items-center justify-center px-[39px] bottom-[60px] z-50">
+        <div className="w-full flex items-center justify-center px-[39px] z-10 " id="auction-direct-link-div" style={{position:"fixed",bottom:"50px"}}>
             <div className="w-full flex items-center justify-center rounded-full bg-white/50 border-2 border-gray-400 backdrop-blur-[45.65px] gap-[28px] py-[34px] px-[20px]">
                 {AuctionDirectLinks.map((items)=>(
                   <div className="w-full flex items-center justify-center bg-black rounded-[50px] px-[34px] py-[20px]">
@@ -125,7 +126,7 @@ const HomePage = () => {
                 ))}
             </div>
         </div>
-        <div className='flex w-full p-3 flex-col items-center h-full' id='auction-wheel'>
+        <div className='flex w-full mt-[400px] px-3 pt-2 pb-3 flex-col items-center h-full' id='auction-wheel'>
           {/* <div id="homePageImage" className="w-1/3 h-1/3 bg-red-500">
             <img src={HomePageImage} alt="HomePage" className="w-full h-full object-cover"/>
           </div> */}
@@ -370,6 +371,7 @@ const HomePage = () => {
       {/* </main> */}
 
     </div>
+    </>
   );
 };
 

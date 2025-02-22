@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { UserCircle2 } from 'lucide-react';
 import SettingNavBarExpandingDiv from './headerSettingFeature';
 
@@ -87,12 +88,17 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
                 <img className="object-cover" src={LogoImage} alt="Logo" />
                 </div>
                 <div className="flex flex-row w-[288px]" id="div-lan-them-utility-bar">
-                <div className="w-full rounded-[50px] border-[1px] border-customOrange flex items-center justify-center">
-                    <a href="/auth/login" className="text-[19px] font-[300] font-libre text-[#0B0B0B] no-underline">Login</a>
-                </div>
-                <div className="w-full flex items-center justify-center rounded-[50px] bg-black">
-                    <a href="/auth/signup" className="text-[19px] font-[300] font-libre text-white no-underline">SignUp</a>
-                </div>
+                  <div className="w-full rounded-[50px] border-[1px] border-customOrange flex items-center justify-center cursor-pointer">
+                    <Link to="/auth/login" className="text-[19px] font-[300] font-libre text-[#0B0B0B] no-underline w-full h-full flex items-center justify-center">
+                      Login
+                    </Link>
+                  </div>
+
+                  <div className="w-full flex items-center justify-center rounded-[50px] bg-black cursor-pointer">
+                    <Link to="/auth/signup" className="text-[19px] font-[300] font-libre text-white no-underline w-full h-full flex items-center justify-center">
+                      SignUp
+                    </Link>
+                  </div>
                 </div>
             </div>
             <div id="div-menu" className="w-full flex flex-row justify-between">

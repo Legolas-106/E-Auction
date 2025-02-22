@@ -15,7 +15,7 @@ const SignUp = () => {
         return navigate('/auth/signup/bidder');
     }
   return (
-    <div className="w-full min-h-[400px] bg-gray-50 py-10" id="div-signup">
+    <div className="w-full min-h-[400px] bg-white py-10" id="div-signup">
       <div className="flex flex-col justify-center items-center">
         {/* Heading Section */}
         <div className="w-full mb-8 text-center">

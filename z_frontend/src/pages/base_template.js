@@ -699,15 +699,17 @@ isHeaderVersion={true} // Flag to adjust styling for header placement
           <SiteMap />
 
         </div>
-        <main className="flex-grow-1 bg-light">
+        <div className="flex flex-col flex-grow min-h-screen">
+          <main className="flex-grow mt-[-400px] bg-transparent z-10">
             <div className="py">
-                <Outlet />
+              <Outlet />
             </div>
-        </main>
+          </main>
 
-        <footer className="footer-class w-full h-[580px] gap-[10px] rounded-tl-[20px] bg-black rounded-tr-[20px] pt-[40px] pr-[28px] pb-[40px] pl-[28px] " style={{}}>
-          < FooterElement />
-        </footer>
+      <footer className="w-full h-[580px] gap-[10px] rounded-tl-[20px] bg-black rounded-tr-[20px] pt-[40px] pr-[28px] pb-[40px] pl-[28px]">
+        <FooterElement />
+      </footer>
+    </div>
       </div>
     );
 };

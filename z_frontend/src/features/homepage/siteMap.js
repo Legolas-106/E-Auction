@@ -52,7 +52,7 @@ const SiteMap = () =>{
     // console.log(actualPath);
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="relative bg-white flex flex-col items-center z-10">
             <div id="div-id-sitemap" className="flex flex-row w-2/3 py-2 items-start">
                 <span>
                     <a title="Home" href="/" className=" text-gray-600 p-1">

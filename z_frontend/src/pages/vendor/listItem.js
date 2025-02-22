@@ -256,7 +256,7 @@ const ListItemForm = () => {
   }
 
   return (
-    <div className='w-full flex flex-col relative'>
+    <div className='w-full flex flex-col relative bg-gray-50'>
         <div className='pt-2 mt-2'>
           <h2>Lot Detail Form</h2>
         </div>

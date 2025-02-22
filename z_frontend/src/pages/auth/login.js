@@ -93,7 +93,7 @@ const LoginPage = () => {
     };
   
     return (
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-gray-100 z-10">
         <div className="container mx-auto h-screen">
           <div className="flex justify-center items-center h-full">
             {/* Left side with image */}

@@ -111,7 +111,7 @@ public class UpcomingAuctionService {
             List<ItemDetailTable> itemDetails = new ArrayList<>();
 
             for(UpcomingAuction item :response){
-                Long id = item.getId();
+                Long id = item.getItemId();
                 if(id!=null){
                     Optional<ItemDetailTable> itemDetailTable = vendorItemRepository.findById(id);
                     if(itemDetailTable.isPresent()){

@@ -42,7 +42,7 @@ public class OngoingAuctionService {
                         }
                     }
                 }
-                res.setErrorCode(loginId);
+                res.setErrorCode("0");
                 res.setMessage("Details Fetched Successfully");
                 res.setOngoingAuction(ongoingAuctions);
                 res.setItemDetails(itemDetails);

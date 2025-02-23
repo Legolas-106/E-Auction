@@ -2,6 +2,9 @@ package com.auction.z_backend.vendor.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,9 +46,11 @@ public class ItemLotDetailTable {
 
     @ManyToOne
     @JoinColumn(name="item_table_id")
+    @JsonBackReference
     private ItemDetailTable itemTable;
 
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    @JsonManagedReference
     private List<LotsImageTable> images;
 
     public void setItemTable(ItemDetailTable itemTable){

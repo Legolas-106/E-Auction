@@ -35,7 +35,7 @@ public class EndedAuctionService {
             if(endedAuction != null){
                 List<ItemDetailTable> itemDetails = new ArrayList<>();
                 for(AuctionEnded auction : endedAuction){
-                    Long itemId = auction.getId();
+                    Long itemId = auction.getItemId();
                     if(itemId != null){
                         Optional<ItemDetailTable> opt_item = vendorItemRepository.findById(itemId);
                         if(opt_item.isPresent()){

@@ -1,5 +1,7 @@
 package com.auction.z_backend.vendor.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class LotsImageTable {
 
     @ManyToOne
     @JoinColumn(name = "item_lot_table_id")
+    @JsonBackReference
     private ItemLotDetailTable itemLotTable;
 
     public void setItemLotTable(ItemLotDetailTable itemLotTable){

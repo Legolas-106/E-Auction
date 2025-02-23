@@ -107,7 +107,7 @@ const LoginPage = () => {
   
             {/* Right side with form */}
             <div className="w-full lg:w-1/2 px-8 lg:px-12">
-              <div className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
+              <div className="bg-blue-100 p-8 rounded-lg shadow-lg max-w-md mx-auto">
                 {/* Social login buttons */}
                 {/* <div className="text-center mb-8">
                   <p className="text-lg text-gray-700 mb-4">Sign in with</p>
@@ -128,8 +128,8 @@ const LoginPage = () => {
                   <div className="border-t border-gray-300 w-full"></div>
                   <span className="bg-white px-4 text-gray-500 text-sm">Or</span>
                 </div> */}
-                <div className='pb-5'> 
-                  <h2>Welcome, Please Log In</h2>
+                <div className='mb-[30px]'> 
+                  <h2 className="font-libre text-[50px] text-left text-blue-500">Welcome back!</h2>
                 </div>
   
                 <form onSubmit={handleSubmit}>
@@ -140,14 +140,17 @@ const LoginPage = () => {
                   )}
   
                   {/* Email input */}
-                  <div className="mb-6">
+                  <div className="mb-[20px]">
+                    <label className="block w-full text-left font-libre p-2 ">
+                      Login ID
+                    </label>
                     <input
                         ref={inputRef}
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                      className="w-full px-[20px] py-[10px] rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
                       placeholder="Enter a valid email address"
                     />
                     {errors.email && (
@@ -158,18 +161,21 @@ const LoginPage = () => {
                   {/* Password input */}
                   <div className="mb-6">
                     <div className="relative">
+                    <label className="block w-full text-left font-libre p-2 ">
+                      Password
+                    </label>
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                        className="w-full px-4 py-3 text-[#6A6A6A] rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
                         placeholder="Enter password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        className="absolute right-3 top-3/4 transform -translate-y-3/4"
                       >
                         <svg
                           className="h-5 w-5 text-gray-400"
@@ -229,22 +235,22 @@ const LoginPage = () => {
                   <p className="text-center mt-4 text-sm">
                     Don't have an account?{' '}
                   </p>
-                  <div className="w-full flex flex-row items-center">
+                  <div className="w-full flex flex-row items-center gap-[10px]">
                     <div className="w-1/2">
                     <button
                         type="button"
                         onClick={() => {
-                          setIsLogin(!isLogin);
+                          setIsLogin(false);
                           navigateTo("signup-bidder");
                         }}
 
-                        className="text-red-600 hover:text-red-800 font-medium"
+                        className="font-libre text-[14px] bg-white/50 border w-full h-full py-2 rounded-[10px] hover:bg-blue-200"
                       >
                         Bidder Registration
                       </button>
                     </div>
                     <div className="w-1/2">
-                        <button type="button" onClick={()=>{setIsLogin(!isLogin);navigateTo("signup-vendor")}} className="text-green-600 hover:text-green-900 font-medium">
+                        <button type="button" onClick={()=>{setIsLogin(false);navigateTo("signup-vendor")}} className="font-libre text-[14px] bg-white/50 border w-full h-full py-2 rounded-[10px] hover:bg-blue-200">
                           Vendor Registration
                         </button>
                     </div>

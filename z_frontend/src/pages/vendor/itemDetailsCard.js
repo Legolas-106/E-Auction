@@ -1,39 +1,40 @@
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import React, { useState, useEffect, use } from 'react';
 
-const LotDetailCard = ({ lot, setSelectedLot, onSubmit }) => {
+const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [showLotDetails,setShowLotDetails] = useState(false);
   const [errors, setErrors] = useState({});
-  console.log(lot);
+  console.log(item);
   useEffect(() => {
     // Initialize formData with lot data
     setFormData({
-      companyName: lot.companyName,
-      auctionType: lot.auctionType,
-      auctionDescription: lot.auctionDescription || '',
-      auctionTitle: lot.auctionTitle || '',
-      auctionStartDate: lot.auctionStartDate || '',
-      auctionPublishDate: lot.auctionPublishDate || '',
-      auctionLotDetails: lot.auctionLotDetails?.map(lotItem => ({
+      companyName: item.companyName,
+      auctionType: item.auctionType,
+      auctionDescription: item.auctionDescription || '',
+      auctionTitle: item.auctionTitle || '',
+      auctionStartDate: item.auctionStartDate || '',
+      auctionEndDate: item.auctionEndDate || '',
+      minBidderRequired : item.minBidderRequired || '',
+      minBidIncrement : item.minBidIncrement || '',
+      auctionPublishDate: item.auctionPublishDate || '',
+      auctionLotDetails: item.lots?.map(lotItem => ({
         ...lotItem,
-        lotEMD: lotItem.lotEMD || '',
-        lotAuctionAmount: lotItem.lotAuctionAmount || '',
+        lotEMD: lotItem.emd || '',
+        lotAuctionAmount: lotItem.auctionAmount || '',
         productCategory: lotItem.productCategory || '',
-        lotWeight: lotItem.lotWeight || '',
+        lotWeight: lotItem.weight || '',
         lotDescription: lotItem.lotDescription || '',
-        lotAddress: lotItem.lotAddress || '',
-        lotCity: lotItem.lotCity || '',
-        lotState: lotItem.lotState || '',
-        lotPostalCode: lotItem.lotPostalCode || '',
-        lotSellerContactNumber: lotItem.lotSellerContactNumber || '',
-        lotAuctionStartDate: lotItem.lotAuctionStartDate || '',
-        lotAuctionEndDate: lotItem.lotAuctionEndDate || ''
+        lotAddress: lotItem.address || '',
+        lotCity: lotItem.city || '',
+        lotState: lotItem.state || '',
+        lotPostalCode: lotItem.postalCode || '',
+        lotSellerContactNumber: lotItem.contactNumber || '',
       })) || []
     });
-  }, [lot]);
+  }, [item]);
 
   const handleInputChange = (e, lotIndex = null, field = null) => {
     const { name, value } = e.target;
@@ -120,7 +121,7 @@ const LotDetailCard = ({ lot, setSelectedLot, onSubmit }) => {
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold">Item Details</h3>
           <button 
-            onClick={() => setSelectedLot(null)}
+            onClick={() => setSelectedItem(null)}
             className="text-gray-500 hover:text-gray-700"
           >
             ✕
@@ -395,7 +396,7 @@ const LotDetailCard = ({ lot, setSelectedLot, onSubmit }) => {
               <button 
                 onClick={() => {
                   setIsEditing(false);
-                  setFormData(lot);
+                  setFormData(item);
                   setErrors({});
                   setHasChanges(false);
                 }}

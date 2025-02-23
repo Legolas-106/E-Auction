@@ -21,9 +21,9 @@ import lombok.Setter;
 public class GetAllItemsResponse {
     private String errorCode;
     private String message;
-    private GetVendorUpcomingAuctionResponse upcomingAuction;
-    private GetVendorListedAuctionResponse listedAuction;
-    private GetVendorOngoingAuctionResponse ongoingAuction;
-    private GetVendorEndedAuctionResponse endAuction;
-    private List<ItemDetailTable> itemDetails;
+    private GetVendorUpcomingAuctionResponse upcomingAuctions;
+    private GetVendorListedAuctionResponse listedAuctions;
+    private GetVendorOngoingAuctionResponse ongoingAuctions;
+    private GetVendorEndedAuctionResponse endedAuctions;
+    private List<ItemDetailTable> unlistedItems;
 }

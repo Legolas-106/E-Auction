@@ -5,14 +5,14 @@ const Card = ({ number, title, description }) => {
   
     return (
       <div 
-        className={`relative ${isHovered ? "w-2/6" : "w-1/6" } h-[364px] bg-black rounded-[2px] transition-all duration-300 ease-in-out overflow-hidden`}
+        className={`relative ${isHovered ? "w-2/6" : "w-1/6" } h-[364px] bg-black/10 backdrop-blur-sm rounded-[2px] transition-all duration-300 ease-in-out overflow-hidden`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Initial content with fixed height */}
         <div className={`absolute inset-0 p-[30px] ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
           <div className="h-full flex flex-col">
-            <h4 className="font-libre font-light text-[32px] leading-[32px] text-white text-left">
+            <h4 className="font-libre font-light text-[32px] leading-[32px] text-black text-left">
               {title}
             </h4>
             <div className="mt-auto"
@@ -31,7 +31,7 @@ const Card = ({ number, title, description }) => {
         <div className={`absolute inset-0 p-[30px] ${isHovered ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <div className="h-full flex flex-col justify-between">
             <h4 
-              className="font-libre font-light text-[32px] leading-[32px] text-white text-left"
+              className="font-libre font-light text-[32px] leading-[32px] text-black text-left"
               style={{
                 opacity: isHovered ? 1 : 0,
                 transform: `translateX(${isHovered ? '0' : '50px'})`,

@@ -8,6 +8,7 @@ module.exports = {
       // Font family extension
       fontFamily: {
         libre: ['Libre Franklin', 'sans-serif'],
+        bauhaus: ['"Montserrat"', 'sans-serif'],
       },
 
       // Font weights for specific elements (bold, light, thin)
@@ -22,6 +23,17 @@ module.exports = {
         '21': '21px',
         '32': '32px',
         '94': '94px',
+        'xxs' : '11px',
+        'xs' : '14px',
+        'sm' : '19px',
+        'base' : '25px',
+        'md' : '32px',
+        'lg' : '42px',
+        'xl' : '55px',
+        '2xl' : '72px',
+        '3xl' : '94px',
+        '4xl' : '123px',
+        'huge' : '161px',
       },
 
       // Line heights for specific elements

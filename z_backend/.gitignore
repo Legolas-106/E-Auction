@@ -34,3 +34,4 @@ build/
 
 src/main/java/**/z_backend/public/
 public/
+logs/

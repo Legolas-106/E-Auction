@@ -132,10 +132,10 @@ const HomePage = () => {
           </div> */}
           <div className='w-full flex flex-col items-center h-full'><AuctionWheel /></div>
         </div>
-        <div id='div-why-us' className='my-2 mb-4 w-full'>
+        <div id='div-why-us' className='my-2 mb-4 w-full bg-transparent'>
             < WhyAuctionHaiPage />
         </div>
-        <div id='div-testimonials' className='w-full h-full mt-5 mb-8 bg-white text-orange-900'>
+        <div id='div-testimonials' className='w-full h-full mt-5 mb-8 bg-transparent text-orange-900'>
             <div id='div-testimonial-corosaul' className='w-full h-[871px] '>
                 < TestimonialCorosaul />
             </div>

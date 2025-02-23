@@ -13,15 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.auction.z_backend.auction.dto.request.CreateUpcomingAuctionDTO;
+import com.auction.z_backend.auction.dto.response.EndedAuction.GetVendorEndedAuctionResponse;
 import com.auction.z_backend.auction.dto.response.ListedAuction.GetVendorListedAuctionResponse;
 import com.auction.z_backend.auction.dto.response.OngoingAuction.GetVendorOngoingAuctionResponse;
 import com.auction.z_backend.auction.dto.response.UpcomingAuction.GetVendorUpcomingAuctionResponse;
 import com.auction.z_backend.auction.dto.response.UpcomingAuctionSaveResponse;
-import com.auction.z_backend.auction.dto.response.EndedAuction.GetVendorEndedAuctionResponse;
-import com.auction.z_backend.auction.model.AuctionEnded;
-import com.auction.z_backend.auction.model.ListedAuction;
-import com.auction.z_backend.auction.model.OngoingAuction;
-import com.auction.z_backend.auction.model.UpcomingAuction;
 import com.auction.z_backend.auction.service.EndedAuctionService;
 import com.auction.z_backend.auction.service.ListedAuctionService;
 import com.auction.z_backend.auction.service.OngoingAuctionService;
@@ -187,27 +183,32 @@ public class VendorItemService {
 
             GetVendorEndedAuctionResponse endedAuction = endedAuctionService.getVendorAuctions(loginId, userId);
             
+            System.out.println(upAuction);
+            System.out.println(onAuction);
+            System.out.println(listAuction);
+            System.out.println(endedAuction);
+
             GetAllItemsResponse response = new GetAllItemsResponse();
 
             if(upAuction.getErrorCode()=="0"){
-                response.setUpcomingAuction(upAuction);
+                response.setUpcomingAuctions(upAuction);
                 System.out.println(upAuction);
             }
             if(listAuction.getErrorCode()=="0"){
-                response.setListedAuction(listAuction);
+                response.setListedAuctions(listAuction);
                 System.out.println(listAuction);
             }
             if(onAuction.getErrorCode()=="0"){
-                response.setOngoingAuction(onAuction);
+                response.setOngoingAuctions(onAuction);
                 System.out.println(onAuction);
             }
             if(endedAuction.getErrorCode()=="0"){
                 System.out.println(endedAuction);
-                response.setEndAuction(endedAuction);
+                response.setEndedAuctions(endedAuction);
             }
             if(!itemTable.isEmpty()){
                 System.out.println(itemTable);
-                response.setItemDetails(itemTable);
+                response.setUnlistedItems(itemTable);
             }
 
             response.setErrorCode("0");

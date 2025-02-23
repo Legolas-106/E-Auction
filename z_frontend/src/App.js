@@ -16,11 +16,24 @@ import AuctionDetails from './pages/auction/auctionDetails';
 import 'bootstrap';
 import './App.css';
 import PolicyPage from './pages/info/policyPage';
+import { AuctionProvider } from './services/auction/auctionHook/useAuctionHook';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
 function App() {
   return (
     <div className="App">
       <AuthProvider>
+        <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
             <Route path="" element={<Layout />}>
@@ -38,14 +51,19 @@ function App() {
               </Route>
               {/* <Route path='auctionDetails' element={< AuctionDetails />} /> */}
               <Route path='vendor'>
-                <Route path='listItem' element={< ListItemForm />} />
-                <Route path='myItems' element={< ItemDetailsPage />} />
+                
+                  <Route path='listItem' element={<AuctionProvider>< ListItemForm /></AuctionProvider>} />
+                  <Route path='myItems' element={<AuctionProvider>< ItemDetailsPage /></AuctionProvider>} />
+                  <Route path='dashboard' />
+                  <Route path='myAuctions'/>
+                  <Route path='payment' />
               </Route>
-              <Route path="listItem" element={< ListItemForm />} />
-              <Route path='MyLots' element={< ItemDetailsPage />} />
               <Route path="myAuction" element={< ListItemForm />} />
               <Route path='bidder'>
                 <Route path='MyBids' />
+                <Route path='dashboard' />
+                <Route path='myBids' />
+                <Route path='payment' />
               </Route>
               <Route path="MyBids" element={<AuctionRouter />} />
               <Route path="dashboard" element={<AuctionRouter />} />
@@ -55,6 +73,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        </QueryClientProvider>
       </AuthProvider>
     </div>
   );

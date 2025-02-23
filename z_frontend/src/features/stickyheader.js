@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { UserCircle2 } from 'lucide-react';
+import { ChevronDown, UserCircle2 } from 'lucide-react';
 import SettingNavBarExpandingDiv from './headerSettingFeature';
 
 const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
@@ -34,6 +34,22 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isSticky]);
 
+  const handleAuctionTableScroll = (e) => {
+    e.preventDefault();
+    const target = document.querySelector("#auction-table");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+  
+      // Apply a slight bounce effect using CSS animation
+      setTimeout(() => {
+        target.classList.add("animate-bounce");
+        setTimeout(() => {
+          target.classList.remove("animate-bounce");
+        }, 600); // Remove after bounce animation
+      }, 500); // Start bounce after scroll
+    }
+  };
+
   return (
     <>
       {/* Original Header */}
@@ -57,9 +73,14 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
                 </div>
             </div> */}
             < SettingNavBarExpandingDiv />
-            <div className='flex flex-col items-center justify-center rounded-l-[50px] bg-[#0A326D] w-[200px]  mt-[10px]'>
-                <a className='no-underline text-[16px] font-libre text-white' > Skip To Main Content </a>
-            </div>
+            <a
+              href="#auction-table"
+              onClick={handleAuctionTableScroll}
+              className="flex flex-row items-center justify-center rounded-l-[50px] bg-[#0A326D] w-[200px] mt-[10px] cursor-pointer no-underline"
+            >
+              <span className="text-white pt-1"> <ChevronDown /> </span>
+              <span className="text-[16px] font-libre text-white"> Skip To Main Content </span>
+            </a>
         </div>
         <header 
             ref={headerRef}
@@ -126,7 +147,7 @@ const StickyHeader = ({ LogoImage, MenuItemsNav, SearchBarNav }) => {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2 pt-2">
                 <img className="h-8 w-auto" src={LogoImage} alt="Logo" />
-                <span className="font-libre text-xl">
+                <span className="font-libre text-md">
                   <span className="font-semibold text-black">Auction</span>
                   <span className="font-semibold text-customOrange">HAI</span>
                 </span>

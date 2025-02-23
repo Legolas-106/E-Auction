@@ -4,12 +4,14 @@ import LotDetailCard from "../vendor/itemDetailsCard";
 import { useAuth } from "../../services/auth/useAuthHook";
 import { VendorService } from "../../services/vendor/vendorService";
 import { constructNow } from "date-fns";
+import { useAuctions } from "../../services/auction/auctionHook/useAuctionHook";
 
 const ItemDetailsPage = () => {
     const [expandedItems, setExpandedItems] = useState({});
-    const [selectedLot, setSelectedLot] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
     const [itemFetched,setItemFetched] = useState(false);
-  
+    const {listed,upcoming,unlisted} = useAuctions();
+    console.log("Listed from context is ",listed, " unlisted form context is : ",unlisted, "\n upcmoings auction are", upcoming);
     // Sample data structure
     let listedLots = [
       {
@@ -105,9 +107,9 @@ const ItemDetailsPage = () => {
         ]
       }
     ];
-    let upcomingAuctionItems;
-    let ongoingAuctionItems;
-    let endedAuctionItems;
+    let upcomingAuctionItems = [];
+    let ongoingAuctionItems = [];
+    let endedAuctionItems = [];
     let unlistedLots = [
       {
         itemNo: "I789",
@@ -189,47 +191,56 @@ const ItemDetailsPage = () => {
       const fetchData = async () =>{
         console.log("Fetching initial Data");
         const userInfo = getCurrUserInfo();
-        if(userInfo && userInfo.username){
-          console.log(userInfo.username,userInfo.id);
-          try{
-            const response = await VendorService.getAllItems(userInfo.id);
-            console.log("Response is received ",response);
-            if(response.listedAuction && response.listedAuction!=null){
-              listedLots = response.listedAuction;
-              console.log(listedLots);
-            }
-            if(response.upcomingAuction && response.upcomingAuction!=null){
-              upcomingAuctionItems = response.upcomingAuction;
-              console.log(upcomingAuctionItems);
+        // if(userInfo && userInfo.username){
+        //   console.log(userInfo.username,userInfo.id);
+        //   try{
+        //     const response = await VendorService.getAllItems(userInfo.id);
+        //     console.log("Response is received ",response);
+        //     console.log(response.errorCode,response.message);
 
-            }
-            if(response.ongoingAuction && response.ongoingAuction!=null){
-              ongoingAuctionItems = response.ongoingAuction;
-              console.log(ongoingAuctionItems);
+        //     const formatedResponse = " '" + response + "' ";
+        //     // console.log(formatedResponse);
+        //     // const resObj = JSON.parse(formatedResponse);
+            
+            
+        //     // console.log(typeof(resObj),resObj.upcomingAuction);
+            
+        //     if(response.listedAuction && response.listedAuction!=null){
+        //       listedLots = response.listedAuction;
+        //       console.log(listedLots);
+        //     }
+        //     if(response.upcomingAuction && response.upcomingAuction!=null){
+        //       upcomingAuctionItems = response.upcomingAuction;
+        //       console.log(upcomingAuctionItems);
 
-            }
-            if(response.endedAuction && response.endedAuction !=null){
-              endedAuctionItems = response.endedAuction;
-              console.log(endedAuctionItems);
+        //     }
+        //     if(response.ongoingAuction && response.ongoingAuction!=null){
+        //       ongoingAuctionItems = response.ongoingAuction;
+        //       console.log(ongoingAuctionItems);
 
-            }
-            if(response.itemDetails && response.itemDetails != null){
-              unlistedLots = response.itemDetails;
-              console.log(unlistedLots);
-            }
-            setItemFetched(true);
-          }catch(err){
-            console.log("Erro while sending request to backend ",err);
-          }
-        }
-        else{
-          console.log("No userInfo is present");
-        }
+        //     }
+        //     if(response.endAuction && response.endAuction !=null){
+        //       endedAuctionItems = response.endAuction;
+        //       console.log(endedAuctionItems);
+
+        //     }
+        //     if(response.itemDetails && response.itemDetails != null){
+        //       unlistedLots = response.itemDetails;
+        //       console.log(unlistedLots);
+        //     }
+        //     setItemFetched(true);
+        //   }catch(err){
+        //     console.log("Erro while sending request to backend ",err);
+        //   }
+        // }
+        // else{
+        //   console.log("No userInfo is present");
+        // }
       }
 
-      fetchData();
+      // fetchData();
       // const tableData = await VendorService
-      loadTableDate();
+      // loadTableDate();
     },[getCurrUserInfo]);
     const LotsTable = ({ item, showSeeDetail }) => (
       <div className="w-full mt-1">
@@ -240,17 +251,17 @@ const ItemDetailsPage = () => {
           <div>EMD</div>
           <div>Auction Amount</div>
         </div>
-        {item.auctionLotDetails.map((lot, index) => ( 
+        {item.lots.map((lot, index) => ( 
           <div key={index} className="grid grid-cols-5 p-2 gap-4 border-b">
-            <div>{lot.auctionLotNumber}</div>
+            <div>{lot.lotNumber}</div>
             <div>{lot.productCategory}</div>
-            <div>{lot.lotDetail}</div>
-            <div></div>
-            <div></div>
+            <div>{lot.lotDescription}</div>
+            <div>{lot.emd}</div>
+            <div>{lot.auctionAmount}</div>
           </div>
         ))}
         <div className="w-full flex flex-row justify-end" id="div-button-group">
-          <button className="p-1 m-1 rounded-lg bg-yellow-700" onClick={()=>{setSelectedLot(item)}}>
+          <button className="p-1 m-1 rounded-lg bg-yellow-700" onClick={()=>{setSelectedItem(item)}}>
             View Details
           </button>
           <button className="p-1 m-1 bg-blue-700 rounded-lg">
@@ -312,13 +323,17 @@ const ItemDetailsPage = () => {
             <div className="flex justify-between items-center">
               <div className="grid grid-cols-3 gap-4 w-full">
                 <div className="font-semibold">{index + 1}</div>
-                <div>{item.itemNo}</div>
-                <div className="flex justify-between items-center">
-                  {item.auctionDescription}
-                  {expandedItems[`unlisted-${index}`] ? 
-                    <ChevronUp className="ml-2" /> : 
-                    <ChevronDown className="ml-2" />
-                  }
+                <div>{item.auctionTitle}</div>
+                <div className="flex justify-center items-center w-full">
+                  <div className="flex w-5/6 items-center justify-center">
+                    {item.auctionDescription}
+                  </div>
+                  <div className="flex justify-end w-1/6">
+                    {expandedItems[`unlisted-${index}`] ? 
+                      <ChevronUp className="ml-2" /> : 
+                      <ChevronDown className="ml-2" />
+                    }
+                  </div>
                 </div>
               </div>
             </div>
@@ -332,9 +347,9 @@ const ItemDetailsPage = () => {
         </div>
       </div>
     );
-  
+    console.log("Unlisted Lots are : ",unlistedLots, " Upcoming Auction ites : ",upcomingAuctionItems);
     return (
-      <div className="w-full h-full flex flex-col items-center" id="div-id-lot-details">
+      <div className="w-full h-full flex flex-col items-center bg-white" id="div-id-lot-details">
         <div className="flex flex-col w-3/4 h-full">
           <h1 className="m-2 p-2 text-2xl font-bold">Item Details</h1>
           
@@ -342,43 +357,61 @@ const ItemDetailsPage = () => {
             <h3 className="text-xl font-semibold mb-4">Auction Items</h3>
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
               <h4 className="text-left text-lg">Ongoing Auctions</h4>
-              <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
-                <div>Sr.No</div>
-                <div>Auction No</div>
-                <div>Item Details</div>
-                <div>Publish Date</div>
-                <div>Auction Type</div>
-              </div>
-              {listedLots.map((item, index) => (
-                <ListedLotCard key={index} item={item} index={index} />
-              ))}
+              {ongoingAuctionItems.length !== 0 ? (
+                <>
+                  <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
+                    <div>Sr.No</div>
+                    <div>Auction No</div>
+                    <div>Item Details</div>
+                    <div>Publish Date</div>
+                    <div>Auction Type</div>
+                  </div>
+                  {ongoingAuctionItems.map((item, index) => (
+                    <ListedLotCard key={index} item={item} index={index} />
+                  ))}
+                </>
+              ) : (
+                <p className="text-center w-full font-bauhaus">No Data Available</p>
+              )}
             </div>
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
               <h4 className="text-left text-lg">Upcoming Auctions</h4>
-              <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
-                <div>Sr.No</div>
-                <div>Auction No</div>
-                <div>Item Details</div>
-                <div>Publish Date</div>
-                <div>Auction Type</div>
-              </div>
-              {listedLots.map((item, index) => (
-                <ListedLotCard key={index} item={item} index={index} />
-              ))}
+              {upcomingAuctionItems.length !== 0 ? (
+                <>
+                  <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
+                    <div>Sr.No</div>
+                    <div>Auction No</div>
+                    <div>Item Details</div>
+                    <div>Publish Date</div>
+                    <div>Auction Type</div>
+                  </div>
+                  {upcomingAuctionItems.map((item, index) => (
+                    <ListedLotCard key={index} item={item} index={index} />
+                  ))}
+                </>
+              ) : (
+                <p className="text-center w-full font-bauhaus">No Data Available</p>
+              )}
             </div>
             
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
               <h4 className="text-left text-lg">Past Auctions</h4>
-              <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
-                <div>Sr.No</div>
-                <div>Auction No</div>
-                <div>Item Details</div>
-                <div>Publish Date</div>
-                <div>Auction Type</div>
-              </div>
-              {listedLots.map((item, index) => (
-                <ListedLotCard key={index} item={item} index={index} />
-              ))}
+              {endedAuctionItems.length !== 0 ? (
+                <>
+                  <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
+                    <div>Sr.No</div>
+                    <div>Auction No</div>
+                    <div>Item Details</div>
+                    <div>Publish Date</div>
+                    <div>Auction Type</div>
+                  </div>
+                  {endedAuctionItems.map((item, index) => (
+                    <ListedLotCard key={index} item={item} index={index} />
+                  ))}
+                </>
+              ) : (
+                <p className="text-center w-full font-bauhaus">No Data Available</p>
+              )}
             </div>
           </div>
   
@@ -386,16 +419,16 @@ const ItemDetailsPage = () => {
             <h3 className="text-xl font-semibold mb-4">Unlisted items</h3>
             <div className="w-full grid grid-cols-3 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
               <div>Sr.No</div>
-              <div>Item No</div>
-              <div>Item Details</div>
+              <div>Auction Title</div>
+              <div>Item Description</div>
             </div>
-            {unlistedLots.map((item, index) => (
+            {unlisted.map((item, index) => (
               <UnlistedLotCard key={index} item={item} index={index} />
             ))}
           </div>
         </div>
   
-        {selectedLot && <LotDetailCard lot={selectedLot} setSelectedLot={setSelectedLot} />}
+        {selectedItem && <LotDetailCard item={selectedItem} setSelectedItem={setSelectedItem} />}
       </div>
     );
   };

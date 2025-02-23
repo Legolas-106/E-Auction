@@ -43,7 +43,10 @@ public class LoginTokenService {
 
         Optional<UserBidder> bidderOpt = bidderUserRepository.findByLoginId(request.getLoginId());
         if (bidderOpt.isPresent()) {
+            System.out.println("Bidder is present : "+request.getPassword());
             UserBidder bidder = bidderOpt.get();
+            System.out.println("Hashed password is "+passwordEncoder.encode(request.getPassword()));
+            System.out.println("Store Hashed pass : "+bidder.getPassword());
             if (passwordEncoder.matches(request.getPassword(), bidder.getPassword())) {
                 List<String> token = jwtTokenProvider.generateToken(bidder.getId(),request.getLoginId(), UserTypes.BIDDER);
 

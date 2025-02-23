@@ -125,6 +125,7 @@ export const VendorService = {
       if(res){
         // console.log("response is ",res.data);
         console.log("Type of response is : ",typeof(res));
+        console.log("Object type of res.data is ",typeof(res.data));
         const res_json = res.data;
         console.log(res_json);
         return res_json;

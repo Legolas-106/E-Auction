@@ -71,7 +71,7 @@ const TestimonialCorosaul = () => {
                     borderRadius : "322px"
                 }}> 
                     <div className="testimonial-item-name absolute top-[126.5px] left-[100px] h-[441px] w-[493px] flex flex-col justify-between items-center">
-                        <h3 className="w-[153px] h-[55px] text-libre " style={{fontWeight:"300",fontSize:"55px",lineHeight:"55px",letterSpacing:"0",alignItems:"center",}}>
+                        <h3 className="w-[153px] h-[55px] font-bauhaus" style={{fontWeight:"300",fontSize:"55px",lineHeight:"55px",letterSpacing:"0",alignItems:"center",}}>
                             {currentTestimonial.name}
                         </h3>
                         <p 

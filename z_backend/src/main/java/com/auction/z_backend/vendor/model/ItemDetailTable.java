@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -71,6 +73,7 @@ public class ItemDetailTable {
     private Boolean auctionEnded = null;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ItemLotDetailTable> itemLotDetails;
 
     public void setItemLotDetails(List<ItemLotDetailTable> itemLotTable){

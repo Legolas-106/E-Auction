@@ -176,14 +176,14 @@ const AuctionTable = () =>{
 
     const Table = () =>{
         return (
-            <div className="w-full flex items-center justify-center h-[596px] bg-black rounded-tl-[20px] rounded-br-[20px]">
-                <div className=" flex flex-row w-full h-[596px]">
-                    <div className="left-[15px] w-[244px] h-full flex flex-col rounded-l-[10px] border-[1px]">
+            <div className="w-full flex items-center justify-center bg-black rounded-tl-[20px] p-2 rounded-br-[20px]" id="auction-table">
+                <div className=" flex flex-row w-full border-[1px] rounded-[10px]">
+                    <div className="pt-[65px] w-[244px] h-full flex flex-col ">
                         {/* Auction Table buttons */}
                         <button 
                             value="trending_auction" 
                             onClick={handleOptionChange} 
-                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] py-3 text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "trending_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[75px]`}
                         >
@@ -192,7 +192,7 @@ const AuctionTable = () =>{
                         <button 
                             value="upcoming_auction" 
                             onClick={handleOptionChange} 
-                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] py-3 text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "upcoming_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[154px]`}
                         >
@@ -201,7 +201,7 @@ const AuctionTable = () =>{
                         <button 
                             value="ongoing_auction" 
                             onClick={handleOptionChange} 
-                            className={`w-[241px] left-[18px] text-[21px]  text-center font-libre transition-all duration-300 ${
+                            className={`w-[241px] left-[18px] py-3 text-[21px]  text-center font-libre transition-all duration-300 ${
                                 currentOption === "ongoing_auction" ? "bg-white text-black rounded-l-[10px]" : "text-[#8F8F8F]"
                             } top-[233px]`}
                         >
@@ -215,11 +215,11 @@ const AuctionTable = () =>{
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }} // Smooth transition
-                        className=" flex flex-col overflow-y-auto w-full h-[546px] left-[259px] top-[25px] rounded-tr-[10px] rounded-br-[10px] bg-white">
+                        className=" flex flex-col overflow-y-auto w-full h-[546px] left-[259px]  bg-white">
 
                         {tableData && tableKeys ? (
-                            <table className=" h-full w-full border-collapse border overflow-y-auto border-gray-300">
-                                <thead className="pt-[36px] min-h-1/6 max-h-[74px]">
+                            <table className="relative h-full w-full border-collapse border overflow-y-auto border-gray-300">
+                                <thead className="sticky top-[-1px] pt-[36px] min-h-1/6 max-h-[74px]">
                                     <tr className="bg-gray-200 flex w-full p-3 h-full border-b-2 border-[#3C3C3C]">
                                         {tableKeys.map((key) => (
                                             <th key={key} className=" px-4 w-full pt-2 text-center font-[300] text-[21px] leading-[21px] tracking-[0%] font-libre" style={{}}>

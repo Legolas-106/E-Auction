@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 <script src="../public/script/customeDateTime.js" ></script>
 
 
+
 const ItemPublishPage = ({itemData, onSubmit, setPublishForm}) =>{
     const navigate = useNavigate();
     const [errors,setErrors] = useState({});
@@ -295,7 +296,7 @@ const ItemPublishPage = ({itemData, onSubmit, setPublishForm}) =>{
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
           <div className="bg-white rounded-lg p-6 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex w-full items-center mb-4">
-              <h3 className="text-4xl w-full font-bold">Publish Item For Auction</h3>
+              <h3 className="text-lg w-full font-bold">Publish Item For Auction</h3>
               <button 
                 onClick={() => setPublishForm(null)}
                 className="text-gray-500 right-0 hover:text-gray-700 bg-gray-400 px-1 text-lg min-w-[10px] max-w-[30px] my-1"
@@ -455,7 +456,7 @@ const ItemPublishPage = ({itemData, onSubmit, setPublishForm}) =>{
     
                 <div className="mt-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-semibold text-lg">Auction Lots</h4>
+                    <h4 className="font-semibold text-base">Auction Lots</h4>
                     <div className='flex flex-row'>
                         <div className='px-4 py-2'>
                             <button onClick={() => setShowLotDetails(!showLotDetails)}>

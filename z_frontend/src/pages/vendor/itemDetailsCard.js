@@ -1,5 +1,7 @@
 import { ChevronUp, ChevronDown } from 'lucide-react';
+import DatePicker from 'react-datepicker';
 import React, { useState, useEffect, use } from 'react';
+import { formatISO } from 'date-fns';
 
 const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -8,6 +10,10 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
   const [showLotDetails,setShowLotDetails] = useState(false);
   const [errors, setErrors] = useState({});
   console.log(item);
+  const now = new Date();
+
+
+  // Setting the formData
   useEffect(() => {
     // Initialize formData with lot data
     setFormData({
@@ -15,11 +21,11 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
       auctionType: item.auctionType,
       auctionDescription: item.auctionDescription || '',
       auctionTitle: item.auctionTitle || '',
-      auctionStartDate: item.auctionStartDate || '',
-      auctionEndDate: item.auctionEndDate || '',
-      minBidderRequired : item.minBidderRequired || '',
-      minBidIncrement : item.minBidIncrement || '',
-      auctionPublishDate: item.auctionPublishDate || '',
+      auctionStartDate: item.auctionStartDate || new Date(now.getTime() + 3*60*60*1000 ),
+      auctionEndDate: item.auctionEndDate || new Date(now.getTime() + 3*60*60*1000 + 5*60*1000),
+      minBidderRequired : item.minBidderRequired || '0',
+      minBidIncrement : item.minBidIncrement || '1%',
+      auctionPublishDate: item.auctionPublishDate || new Date(now.getTime() + 2*60*60*1000),
       auctionLotDetails: item.lots?.map(lotItem => ({
         ...lotItem,
         lotEMD: lotItem.emd || '',
@@ -58,6 +64,13 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
     }
   };
 
+  const handleDateChange = (date,field) =>{
+    setFormData((prev)=>({
+      ...prev,
+      [field] : date
+    }));
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -69,6 +82,48 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
       newErrors.auctionTitle = 'Auction title is required';
     }
 
+    if(!formData.auctionStartDate){
+      newErrors.auctionStartDate = "Auction Start Date is required";
+    }
+    if(!formData.auctionEndDate){
+      newErrors.auctionEndDate = "Auction End Date is required"
+    }
+
+    if(!formData.auctionPublishDate){
+      newErrors.auctionPublishDate = "Auction Publish Date is required"
+    }
+
+    //Checking time differences between them
+    let publishDateTime = formData.auctionPublishDate;
+    let startDateTime = formData.auctionStartDate;
+    let endDateTime = formData.auctionEndDate;
+    let now = new Date().getTime();
+
+    if (publishDateTime < now) {
+        newErrors.auctionPublishDate = "Publish date and time must be in the future";
+    }
+    if (startDateTime < now) {
+        newErrors.auctionStartDate = "Auction start date and time must be in the future";
+    }
+    if (endDateTime < now) {
+        newErrors.auctionEndDate = "Auction end date and time must be in the future";
+    }
+
+    let twoHoursBeforeStart = startDateTime - 2 * 60 * 60 * 1000;
+    let twoHoursBeforeEnd = endDateTime - 2 * 60 * 60 * 1000;
+    if (publishDateTime > twoHoursBeforeStart || publishDateTime > twoHoursBeforeEnd) {
+        newErrors.auctionPublishDate =
+            "Publish date must be at least 2 hours before the start and end date";
+    }
+
+    let minDifference = 5 * 60 * 1000;
+    if (endDateTime - startDateTime < minDifference) {
+        newErrors.auctionEndDate =
+            "Auction End Date must be at least 5 minutes after the Start Date";
+    }
+
+
+
     // Validate lot details
     formData.auctionLotDetails.forEach((lot, index) => {
       if (!lot.lotDescription) {
@@ -79,6 +134,9 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
       }
       if (!lot.lotEMD) {
         newErrors[`lot_${index}_emd`] = 'EMD is required';
+      }
+      if (!lot.lotAddress){
+        newErrors[`lot_${index}_address`] = "Lot Address is required";
       }
     });
 
@@ -119,7 +177,7 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style={{"zIndex":"1000"}}>
       <div className="bg-white rounded-lg p-6 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold">Item Details</h3>
+          <h3 className="text-md font-bold">Item Details</h3>
           <button 
             onClick={() => setSelectedItem(null)}
             className="text-gray-500 hover:text-gray-700"
@@ -137,6 +195,7 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                 <input 
                   name="companyName"
                   value={formData.companyName || ''}
+                  onChange={handleInputChange}
                   className="w-full p-2 border rounded bg-gray-100"
                   readOnly 
                 />
@@ -146,6 +205,7 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                 <input 
                   name="auctionType"
                   value={formData.auctionType || ''}
+                  onChange={handleInputChange}
                   className="w-full p-2 border rounded bg-gray-100"
                   readOnly
                 />
@@ -182,32 +242,70 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                   readOnly={!isEditing}
                 />
               </div>
-            </div>
-          </div>
+                         {/* Auction Start Date */}
 
-          <div className="col-span-2 rounded p-1">
-            <div className="flex flex-row w-full items-center justify-center gap-4">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Auction Start Date</label>
-                <input 
-                  type="date"
-                  name="auctionStartDate"
-                  value={formData.auctionStartDate || ''}
-                  onChange={handleInputChange}
-                  className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                  readOnly={!isEditing}
-                />
-              </div>
+            </div>
+            <div className='grid grid-cols-3 gap-2 mt-3'>
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">Auction Publish Date</label>
-                <input 
-                  type="date"
-                  name="auctionPublishDate"
-                  value={formData.auctionPublishDate || ''}
-                  onChange={handleInputChange}
-                  className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                  readOnly={!isEditing}
+                <DatePicker 
+                  selected={formData.auctionPublishDate}
+                  showTimeSelect
+                  dateFormat="MM/dd/yyyy h:mm aa"
+                  className="w-full px-2 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-400 transition-colors duration-200 placeholder-gray-400 outline-none"
+                  onChange={(date)=>handleDateChange(date,"auctionPublishDate")}
                 />
+                {errors.auctionPublishDate && <p className="text-red-500 mt-1 text-sm">{errors.auctionPublishDate}</p>}
+              </div>
+              <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                      Auction Start Date
+                  </label>
+                  <DatePicker
+                      selected={formData.auctionStartDate}
+                      onChange={(date) => handleDateChange(date, "auctionStartDate")}
+                      showTimeSelect
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      className="w-full px-2 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-400 transition-colors duration-200 placeholder-gray-400 outline-none"
+                  />
+                  {errors.auctionStartDate && <p className="text-red-500 mt-1 text-sm">{errors.auctionStartDate}</p>}
+              </div>
+              <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                      Auction End Date
+                  </label>
+                  <DatePicker
+                      selected={formData.auctionEndDate}
+                      onChange={(date) => handleDateChange(date, "auctionEndDate")}
+                      showTimeSelect
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      className="w-full px-2 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-400 transition-colors duration-200 placeholder-gray-400 outline-none"
+                  />
+                  {errors.auctionEndDate && <p className="text-red-500 mt-1 text-sm">{errors.auctionEndDate}</p>}
+              </div>
+              <div className='space-y-2'>
+                <label className='block text-sm font-medium text-gray-700'>
+                    Min Bidder Required
+                </label>
+                <input
+                  type='text'
+                  className='p-2 border rounded'
+                  value={formData.minBidderRequired}
+                  onChange={handleInputChange}
+                />
+                {errors.minBidderRequired && <p className='form-error'>{errors.minBidderRequired}</p>}
+              </div>
+              <div className='space-y-2'>
+                <label className='block text-sm font-medium text-gray-700'>
+                    Bid Increment Rate
+                </label>
+                <input
+                  type='text'
+                  className='p-2 border rounded'
+                  value={formData.minBidIncrement}
+                  onChange={handleInputChange}
+                />
+                {errors.minBidIncrement && <p className='form-error'>{errors.minBidIncrement}</p>}
               </div>
               <div className='space-y-2'>
                 <label className='block text-sm font-medium text-gray-700'>Total Auction Amount</label>
@@ -218,6 +316,23 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                     readOnly
                   />
               </div>
+            </div>
+          </div>
+
+          <div className="col-span-2 rounded p-1">
+            <div className="flex flex-row w-full items-center justify-center gap-4">
+              {/* <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Auction Start Date</label>
+                <input 
+                  type="date"
+                  name="auctionStartDate"
+                  value={formData.auctionStartDate || ''}
+                  onChange={handleInputChange}
+                  className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                  readOnly={!isEditing}
+                />
+              </div> */}
+   
             </div>
 
             <div className="mt-6">
@@ -298,41 +413,77 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                         />
                       </div>
                       <div className="col-span-2 grid grid-cols-2 gap-4">
-                        <input
-                          placeholder="Address"
-                          value={lotItem.lotAddress}
-                          onChange={(e) => handleInputChange(e, index, 'lotAddress')}
-                          className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                          readOnly={!isEditing}
-                        />
-                        <input
-                          placeholder="City"
-                          value={lotItem.lotCity}
-                          onChange={(e) => handleInputChange(e, index, 'lotCity')}
-                          className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                          readOnly={!isEditing}
-                        />
-                        <input
-                          placeholder="State"
-                          value={lotItem.lotState}
-                          onChange={(e) => handleInputChange(e, index, 'lotState')}
-                          className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                          readOnly={!isEditing}
-                        />
-                        <input
-                          placeholder="Postal Code"
-                          value={lotItem.lotPostalCode}
-                          onChange={(e) => handleInputChange(e, index, 'lotPostalCode')}
-                          className={`p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                          readOnly={!isEditing}
-                        />
+                        <div className='space-y-2'>
+                          <label className='form-label-center'>
+                              Lot Address
+                              {errors[`lot_${index}_address`] && (
+                                <span className="text-red-500 text-xs ml-2">{errors[`lot_${index}_address`]}</span>
+                              )}
+                          </label>
+                          <input
+                            placeholder="Address"
+                            value={lotItem.lotAddress}
+                            onChange={(e) => handleInputChange(e, index, 'lotAddress')}
+                            className={`form-input ${isEditing ? 'bg-white' : 'bg-gray-100'}
+                            ${errors[`lot_${index}_address`] ? 'border-red-500' : ''}`}
+                            readOnly={!isEditing}
+                          />
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='form-label-center'>
+                              Lot City
+                              {errors[`lot_${index}_city`] && (
+                                <span className="text-red-500 text-xs ml-2">{errors[`lot_${index}_city`]}</span>
+                              )}
+                          </label>
+                          <input
+                            placeholder="City"
+                            value={lotItem.lotCity}
+                            onChange={(e) => handleInputChange(e, index, 'lotCity')}
+                            className={`form-input ${isEditing ? 'bg-white' : 'bg-gray-100'}
+                            ${errors[`lot_${index}_city`] ? 'border-red-500' : ''}`}
+                            readOnly={!isEditing}
+                          />
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='form-label-center'>
+                              Lot State
+                              {errors[`lot_${index}_state`] && (
+                                <span className="text-red-500 text-xs ml-2">{errors[`lot_${index}_state`]}</span>
+                              )}
+                          </label>
+                          <input
+                            placeholder="State"
+                            value={lotItem.lotState}
+                            onChange={(e) => handleInputChange(e, index, 'lotState')}
+                            className={`form-input ${isEditing ? 'bg-white' : 'bg-gray-100'}
+                            ${errors[`lot_${index}_state`] ? 'border-red-500' : ''}`}
+                            readOnly={!isEditing}
+                          />
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='form-label-center'>
+                              Lot Postal Code
+                              {errors[`lot_${index}_postalCode`] && (
+                                <span className="text-red-500 text-xs ml-2">{errors[`lot_${index}_postalCode`]}</span>
+                              )}
+                          </label>
+                          <input
+                            placeholder="Postal Code"
+                            value={lotItem.lotPostalCode}
+                            onChange={(e) => handleInputChange(e, index, 'lotPostalCode')}
+                            className={`form-input ${isEditing ? 'bg-white' : 'bg-gray-100'}
+                            ${errors[`lot_${index}_postalCode`] ? 'border-red-500' : ''}`}
+                            readOnly={!isEditing}
+                          />
+                        </div>
                       </div>
                       <div>
                         <label className="text-sm text-gray-600">Contact</label>
                         <input
                           value={lotItem.lotSellerContactNumber}
                           onChange={(e) => handleInputChange(e, index, 'lotSellerContactNumber')}
-                          className={`w-full p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                          className={`w-full form-input ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                           readOnly={!isEditing}
                         />
                       </div>
@@ -344,28 +495,6 @@ const LotDetailCard = ({ item, setSelectedItem, onSubmit }) => {
                           className={`w-full p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                           readOnly={!isEditing}
                         />
-                      </div>
-                      <div className="col-span-2 grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm text-gray-600">Start Date</label>
-                          <input
-                            type="date"
-                            value={lotItem.lotAuctionStartDate}
-                            onChange={(e) => handleInputChange(e, index, 'lotAuctionStartDate')}
-                            className={`w-full p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                            readOnly={!isEditing}
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-gray-600">End Date</label>
-                          <input
-                            type="date"
-                            value={lotItem.lotAuctionEndDate}
-                            onChange={(e) => handleInputChange(e, index, 'lotAuctionEndDate')}
-                            className={`w-full p-2 border rounded ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
-                            readOnly={!isEditing}
-                          />
-                        </div>
                       </div>
                     </div>
                   </div>

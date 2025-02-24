@@ -111,8 +111,15 @@ module.exports = {
   plugins: [
     function ({ addComponents }) {
       addComponents({
+        // Form Custom Classes
+        ".form-error" : {
+          "@apply text-red-500 mt-1 text-sm" : "",
+        },
         ".form-label": {
-          "@apply text-lg font-medium text-gray-700 block text-left": "",
+          "@apply text-sm font-medium text-gray-700 block text-left": "",
+        },
+        ".form-label-center": {
+          "@apply text-sm font-medium text-gray-700 block text-center": "",
         },
         ".form-input": {
           "@apply mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500": "",

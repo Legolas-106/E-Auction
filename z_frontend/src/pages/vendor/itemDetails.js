@@ -351,12 +351,12 @@ const ItemDetailsPage = () => {
     return (
       <div className="w-full h-full flex flex-col items-center bg-white" id="div-id-lot-details">
         <div className="flex flex-col w-3/4 h-full">
-          <h1 className="m-2 p-2 text-2xl font-bold">Item Details</h1>
+          <h1 className="m-2 p-2 text-lg font-bold">Item Details</h1>
           
           <div id="div-id-listed-lots" className="flex flex-col w-full h-full items-start rounded-lg border border-gray-500 m-2 p-3">
-            <h3 className="text-xl font-semibold mb-4">Auction Items</h3>
+            <h3 className="text-md font-semibold mb-4">Auction Items</h3>
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
-              <h4 className="text-left text-lg">Ongoing Auctions</h4>
+              <h4 className="text-left text-base">Ongoing Auctions</h4>
               {ongoingAuctionItems.length !== 0 ? (
                 <>
                   <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
@@ -375,7 +375,7 @@ const ItemDetailsPage = () => {
               )}
             </div>
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
-              <h4 className="text-left text-lg">Upcoming Auctions</h4>
+              <h4 className="text-left text-base">Upcoming Auctions</h4>
               {upcomingAuctionItems.length !== 0 ? (
                 <>
                   <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
@@ -395,7 +395,7 @@ const ItemDetailsPage = () => {
             </div>
             
             <div className="w-full flex flex-col h-full p-2 items-start rounded-sm border border-gray-300">
-              <h4 className="text-left text-lg">Past Auctions</h4>
+              <h4 className="text-left text-base">Past Auctions</h4>
               {endedAuctionItems.length !== 0 ? (
                 <>
                   <div className="w-full grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
@@ -416,7 +416,7 @@ const ItemDetailsPage = () => {
           </div>
   
           <div className="flex flex-col w-full h-full items-start border rounded-lg border-gray-500 m-2 p-2" id="div-unlisted-lots">
-            <h3 className="text-xl font-semibold mb-4">Unlisted items</h3>
+            <h3 className="text-md font-semibold mb-4">Unlisted items</h3>
             <div className="w-full grid grid-cols-3 gap-4 px-4 py-2 bg-gray-100 rounded-t-lg font-semibold">
               <div>Sr.No</div>
               <div>Auction Title</div>

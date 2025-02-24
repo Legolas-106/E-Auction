@@ -33,7 +33,7 @@ public class SecurityConfig {
             .cors().and() // Enable CORS
             .csrf().disable() // Disable CSRF for simplicity (not recommended for production)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/public/**", "/api/auth/**","/api/searchAuction/**","/api/bidder/register","/api/vendor/register").permitAll()
+                .requestMatchers("/api/public/**", "/api/auth/**","/api/searchAuction/**","/api/bidder/register","/api/vendor/register","/api/common/**").permitAll()
                 .requestMatchers("/api/vendor/**").hasRole("VENDOR")
                 .requestMatchers("/api/bidder/**").hasRole("BIDDER")
                 // Bidder-specific endpoints
